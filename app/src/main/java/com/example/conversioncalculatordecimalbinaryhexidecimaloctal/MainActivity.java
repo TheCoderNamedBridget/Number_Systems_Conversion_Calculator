@@ -11,8 +11,10 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<Integer> binNum = new ArrayList<>();//set equal to user input
+    ArrayList<Integer> hexOrOctNum = new ArrayList<>();//set equal to user input
 
     public static Map<String, String> hexToBinTable;
+    public static Map<String, String> hexToDeciTable;
     public static Map<String, String> octToBinTable;
 
     @Override
@@ -49,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
         hexToBinTable.put("D", "1101");
         hexToBinTable.put("E", "1110");
         hexToBinTable.put("F", "1111");
+
+        hexToDeciTable = new HashMap<>();
+        hexToDeciTable.put("A", "10");
+        hexToDeciTable.put("B", "11");
+        hexToDeciTable.put("C", "12");
+        hexToDeciTable.put("D", "13");
+        hexToDeciTable.put("E", "14");
+        hexToDeciTable.put("F", "15");
 
         octToBinTable = new HashMap<>();
         octToBinTable.put("0", "000");
@@ -116,27 +126,42 @@ public class MainActivity extends AppCompatActivity {
         return binNum;
     }
 
-    public void differentBaseToDeci(String numSystem, String numGiven){
-
+    //TODO finish class
+    public int differentBaseToDeci(String numSystem, ArrayList numGiven){
+        int deciNum = 0;
+        if ( numSystem.equals("oct")){
+            for (int p = 0; p < numGiven.size();p++){
+                deciNum += Math.pow(8,p) * (int)numGiven.get(p);
+            }
+        } else if (numSystem.equals("hex")){//numSystem.equals("hex")
+            for (int i = 0; i < numGiven.size(); i++){
+                if ("1234567890".contains((String)numGiven.get(i))){//adds int values from hex to decivalue
+                    deciNum += Math.pow(16,i) * (int)numGiven.get(i);
+                } else {//adds letter values from hex to decivalue
+                    deciNum += Math.pow(16,i) * Integer.valueOf(hexToBinTable.get((String)numGiven.get(i)));
+                }
+            }
+        }
+        return deciNum;
     }
 
-    //Todo finish class
+    //TODO finish class
     public void binToHexOrOct(String numSystem, ArrayList binNum){
         //convert binNum to String
         String testBinNum;
         numSystem = "hex";
         if (numSystem.equals("hex")){
-            //hexToBinTable.
+            //add 0 to end of array until ArrayList.size % 4 == 0
+            //look up binary value to hex
         }
     }
 
-    //Todo finish class
+    //TODO finish class
     public ArrayList hexOrOctToBinary(String numSystem, ArrayList hexOrOctNum){
         String binaryValue = "";
-
+        ArrayList<Integer> binaryNum = new ArrayList();
         if (numSystem.equals("hex")){
             for (int i  = 0; i < hexOrOctNum.size(); i++){
-
                 binaryValue += hexToBinTable.get(hexOrOctNum.get(i));
             }
 
