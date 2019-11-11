@@ -3,6 +3,7 @@ package com.example.conversioncalculatordecimalbinaryhexidecimaloctal;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -200,5 +201,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void reverseArrayList(){
 
+    }
+
+    public void showCalculatorScreen (View view){
+        setContentView(R.layout.activity_calculator);
+    }
+
+    public void showPracticeProblemScreen (View view){
+        setContentView(R.layout.activity_practice_problems);
     }
 }

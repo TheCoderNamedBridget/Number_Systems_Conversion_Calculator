@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Conversion Calculator(Decimal,Binary,Hexidecimal,Octal)</string>
+    <string name="generateNumber">Generate Number</string>
 </resources>
