@@ -3,6 +3,7 @@ package com.example.conversioncalculatordecimalbinaryhexidecimaloctal;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Integer> binNum = new ArrayList<>();//set equal to user input
     ArrayList<Integer> hexOrOctNum = new ArrayList<>();//set equal to user input
+    String numSystem = "hex";
 
     public static Map<String, String> hexToBinTable;
     public static Map<String, String> hexToDeciTable;
@@ -26,9 +28,14 @@ public class MainActivity extends AppCompatActivity {
         binNum.add(1);
         binNum.add(1);
 
+        hexOrOctNum.add(1);
+        hexOrOctNum.add(1);
+        hexOrOctNum.add(1);
+
         setContentView(R.layout.activity_main);
-        binToDeci(binNum);
-        deciToWholeBin(100);
+        differentBaseToDeci(numSystem, hexOrOctNum);
+//        binToDeci(binNum);
+//        deciToWholeBin(100);
     }
 
     //Initializes key for Hex and Oct values
@@ -126,22 +133,30 @@ public class MainActivity extends AppCompatActivity {
         return binNum;
     }
 
-    //TODO finish class
+    //converts from decimal to different base
     public int differentBaseToDeci(String numSystem, ArrayList numGiven){
         int deciNum = 0;
+        System.out.print("decinum " + deciNum);
         if ( numSystem.equals("oct")){
+
             for (int p = 0; p < numGiven.size();p++){
+
                 deciNum += Math.pow(8,p) * (int)numGiven.get(p);
             }
         } else if (numSystem.equals("hex")){//numSystem.equals("hex")
             for (int i = 0; i < numGiven.size(); i++){
-                if ("1234567890".contains((String)numGiven.get(i))){//adds int values from hex to decivalue
+                System.out.print("decinum in loop " + deciNum);
+                if ("1234567890".contains(String.valueOf(numGiven.get(i)))){//adds int values from hex to decivalue
                     deciNum += Math.pow(16,i) * (int)numGiven.get(i);
                 } else {//adds letter values from hex to decivalue
-                    deciNum += Math.pow(16,i) * Integer.valueOf(hexToBinTable.get((String)numGiven.get(i)));
+                    deciNum += Math.pow(16,i) * Integer.valueOf(hexToBinTable.get(String.valueOf(numGiven.get(i))));
                 }
             }
         }
+        System.out.print("decinum " + deciNum);
+
+//        TextView textViewToChange = (TextView) findViewById(R.id.hello);
+//        textViewToChange.setText(deciNum);
         return deciNum;
     }
 
