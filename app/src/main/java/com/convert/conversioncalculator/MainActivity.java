@@ -16,6 +16,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     String userInput = "";
+    String computerOutputText = "";
     ArrayList<Integer> binNum = new ArrayList<>(userInput.length());//set equal to user input
     ArrayList<Integer> hexOrOctNum = new ArrayList<>();//set equal to user input
     String numSystem = "hex";
@@ -238,12 +239,6 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList convertStringToArrayList(String string){
         System.out.println("insidestringtoarraylist " + userInput);
         ArrayList array = new ArrayList(userInput.length());
-        System.out.println("sizeofstringinconvert " + userInput.length());
-        System.out.println(" Substring being added " + string.substring(3, 4 ));
-        System.out.println(" Substring being added " + string.substring(2, 3 ));
-        System.out.println(" Substring being added " + string.substring(1, 2 ));
-        System.out.println(" Substring being added " + string.substring(0, 1 ));
-        System.out.println(" Substring being added " + string.substring(0, 1 ));
         for (int i = 0; i < string.length(); i++){
             System.out.println(" Substring being added " + string.substring(string.length() - (i + 1), string.length() - i));
             array.add(string.substring(string.length() - (i + 1), string.length() - i));
@@ -447,6 +442,7 @@ public class MainActivity extends AppCompatActivity {
         startingNumberSystem = "";
         convertedNumberSystem = "";
         userInput = "";
+        computerOutputText = "";
         startingNumChosen = false;
         convertingNumChosen = false;
         TextView beginNumSys = (TextView) findViewById(R.id.startingNumberSystemText);
@@ -455,11 +451,10 @@ public class MainActivity extends AppCompatActivity {
         endNumSys.setText(convertedNumberSystem);
         TextView userInputToChange = (TextView) findViewById(R.id.userInputText);
         userInputToChange.setText(userInput);
+        TextView computerOutputToChange = (TextView) findViewById(R.id.computerOutputText);
+        computerOutputToChange.setText(userInput);
     }
 
-    //TODO: Finish method
-    //if selected as starting number system
-    //make letters, and numbers that are not 1 || 0 disappear from buttons and text
     public void buttonBinaryClicked (View view){
         if (!startingNumChosen){
             startingNumChosen = true;
@@ -476,9 +471,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //TODO: Finish method
-    //if selected as starting number system
-    //make letters disappear from buttons and text
     public void buttonDecimalClicked (View view){
         if (!startingNumChosen){
             startingNumChosen = true;
@@ -494,7 +486,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //TODO: Finish method
     public void buttonHexidecimalClicked (View view){
         if (!startingNumChosen){
             startingNumChosen = true;
@@ -509,9 +500,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //TODO: Finish method
-    //if selected as starting number system
-    //make letters disappear from buttons and text
     public void buttonOctalClicked (View view){
         if (!startingNumChosen){
             startingNumChosen = true;
@@ -627,6 +615,5 @@ public class MainActivity extends AppCompatActivity {
     public void showPracticeProblemScreen (View view){
         setContentView(R.layout.activity_practice_problems);
     }
-
 
 }
