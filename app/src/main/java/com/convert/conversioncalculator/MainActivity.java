@@ -90,8 +90,49 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void conversionLogicStreams(String startingNumSystem, String endingNumberSytem, String numGiven){
+    //TODO finish this class
+    public void calculateConvertedValue(View view){
+        if (startingNumChosen = true && convertingNumChosen == true){
 
+            if (startingNumberSystem.equals("Decimal")){
+                if (convertedNumberSystem.equals("Binary")){//TODO write conversion arrarylist to string method
+                    int intValueOfUserInput = 0;
+                    intValueOfUserInput = Integer.valueOf(userInput);
+                    deciToWholeBin(intValueOfUserInput);
+                    TextView showOutputDeciToBin = (TextView) findViewById(R.id.computerOutputText);
+                    //convert arraylist to string
+                    showOutputDeciToBin.setText(userInput);
+                } else if (convertedNumberSystem.equals("Hexidecimal")){
+                    //convert to binary then hex
+                } else if (convertedNumberSystem.equals("Octal")){
+                    //convert to binary then oct
+                }
+            } else if (startingNumberSystem.equals("Binary")){//Convert to oct hex or deci
+                if (convertedNumberSystem.equals("Decimal")){//TODO FIX THIS: number is being converted correctly but array is coming in in reverse order of what the user sees, wrigt reverse array method
+                    String intValueOfUserInput = String.valueOf(binToDeci(binNum));
+                    TextView showOutputDeciToBin = (TextView) findViewById(R.id.computerOutputText);
+                    showOutputDeciToBin.setText(intValueOfUserInput);
+                } else if (convertedNumberSystem.equals("Hexidecimal")){
+                    //call binary to hex method
+                } else if (convertedNumberSystem.equals("Octal")){
+                    //call bainry to oct method
+                }
+            } else if (startingNumberSystem.equals("Octal")){//Convert to Binary then hex or deci
+                //Convert to binary
+                if (convertedNumberSystem.equals("Hexidecimal")){
+                    //call binary to hex method
+                } else if (convertedNumberSystem.equals("Decimal")){
+                    //call binary to decimal method
+                }
+            } else if (startingNumberSystem.equals("Hexidecimal")){//Convert to Binary then Octal or deci
+                //Convert to binary
+                if (convertedNumberSystem.equals("Octal")){
+                    //call binary to octal method
+                } else if (convertedNumberSystem.equals("Decimal")){
+                    //call binary to decimal method
+                }
+            }
+        }
     }
 
     //returns int value of binary arraylist given
@@ -307,6 +348,8 @@ public class MainActivity extends AppCompatActivity {
         } else if (userInput.equals("") && !startingNumberSystem.equals("")){
             startingNumberSystem = "";
             startingNumChosen = false;
+            makeLettersGoneOrVisible("visible");
+            makeNumbersGoneOrVisible("visible");
             TextView beginNumSys = (TextView) findViewById(R.id.startingNumberSystemText);
             beginNumSys.setText(startingNumberSystem);
         } else if (!userInput.equals("")){
@@ -318,6 +361,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void clearUserInput (View view){
         makeLettersGoneOrVisible("visible");
+        makeNumbersGoneOrVisible("visible");
         startingNumberSystem = "";
         convertedNumberSystem = "";
         userInput = "";
@@ -341,6 +385,7 @@ public class MainActivity extends AppCompatActivity {
             TextView textViewToChange = (TextView) findViewById(R.id.startingNumberSystemText);
             textViewToChange.setText(startingNumberSystem);
             makeLettersGoneOrVisible("gone");
+            makeNumbersGoneOrVisible("gone");
         } else if (!convertingNumChosen && !startingNumberSystem.equals("Binary")){
             convertingNumChosen = true;
             convertedNumberSystem += "Binary";
@@ -432,36 +477,64 @@ public class MainActivity extends AppCompatActivity {
 
     public void makeNumbersGoneOrVisible (String goneOrVisible){
         if (goneOrVisible.equals("gone")){
-            View A = findViewById(R.id.AButton);
-            A.setVisibility(View.GONE);
-            View B = findViewById(R.id.BButton);
-            B.setVisibility(View.GONE);
-            View C = findViewById(R.id.CButton);
-            C.setVisibility(View.GONE);
-            View D = findViewById(R.id.DButton);
-            D.setVisibility(View.GONE);
-            View E = findViewById(R.id.EButton);
-            E.setVisibility(View.GONE);
-            View F = findViewById(R.id.FButton);
-            F.setVisibility(View.GONE);
+
+            View two = findViewById(R.id.twoButton);
+            two.setVisibility(View.GONE);
+
+            View three = findViewById(R.id.threeButton);
+            three.setVisibility(View.GONE);
+
+            View four = findViewById(R.id.fourButton);
+            four.setVisibility(View.GONE);
+
+            View five = findViewById(R.id.fiveButton);
+            five.setVisibility(View.GONE);
+
+            View six = findViewById(R.id.sixButton);
+            six.setVisibility(View.GONE);
+
+            View seven = findViewById(R.id.sevenButton);
+            seven.setVisibility(View.GONE);
+
+            View eight = findViewById(R.id.eightButton);
+            eight.setVisibility(View.GONE);
+
+            View nine = findViewById(R.id.nineButton);
+            nine.setVisibility(View.GONE);
+
         } else if (goneOrVisible.equals("visible")){
-            View A = findViewById(R.id.AButton);
-            A.setVisibility(View.VISIBLE);
-            View B = findViewById(R.id.BButton);
-            B.setVisibility(View.VISIBLE);
-            View C = findViewById(R.id.CButton);
-            C.setVisibility(View.VISIBLE);
-            View D = findViewById(R.id.DButton);
-            D.setVisibility(View.VISIBLE);
-            View E = findViewById(R.id.EButton);
-            E.setVisibility(View.VISIBLE);
-            View F = findViewById(R.id.FButton);
-            F.setVisibility(View.VISIBLE);
+            View two = findViewById(R.id.twoButton);
+            two.setVisibility(View.VISIBLE);
+
+            View three = findViewById(R.id.threeButton);
+            three.setVisibility(View.VISIBLE);
+
+            View four = findViewById(R.id.fourButton);
+            four.setVisibility(View.VISIBLE);
+
+            View five = findViewById(R.id.fiveButton);
+            five.setVisibility(View.VISIBLE);
+
+            View six = findViewById(R.id.sixButton);
+            six.setVisibility(View.VISIBLE);
+
+            View seven = findViewById(R.id.sevenButton);
+            seven.setVisibility(View.VISIBLE);
+
+            View eight = findViewById(R.id.eightButton);
+            eight.setVisibility(View.VISIBLE);
+
+            View nine = findViewById(R.id.nineButton);
+            nine.setVisibility(View.VISIBLE);
         }
     }
 
     public void showHomeScreen (View view){
         userInput = "";
+        startingNumChosen = false;
+        convertingNumChosen = false;
+        startingNumberSystem = "";
+        convertedNumberSystem = "";
         setContentView(R.layout.activity_main);
     }
 
