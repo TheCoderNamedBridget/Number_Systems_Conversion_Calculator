@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
     String userInput = "";
     String computerOutputText = "";
     ArrayList<Integer> binNum = new ArrayList<>(userInput.length());//set equal to user input
-    ArrayList<Integer> hexOrOctNum = new ArrayList<>();//set equal to user input
-    String numSystem = "hex";
+    ArrayList<Integer> hexNum = new ArrayList<>();//set equal to user input
+    ArrayList<Integer> octNum = new ArrayList<>();
 
     String startingNumberSystem = "";
     Boolean startingNumChosen = false;
@@ -92,12 +92,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (startingNumberSystem.equals("Decimal")){
                 if (convertedNumberSystem.equals("Binary")){//TODO write conversion arrarylist to string method
-                    int intValueOfUserInput = 0;
-                    intValueOfUserInput = Integer.valueOf(userInput);
-                    deciToWholeBin(intValueOfUserInput);
+                    String intValueOfUserInput = convertArrayListToString(deciToWholeBin(Integer.valueOf(userInput)));
                     TextView showOutputDeciToBin = (TextView) findViewById(R.id.computerOutputText);
-                    //convert arraylist to string
-                    showOutputDeciToBin.setText(userInput);
+                    showOutputDeciToBin.setText(intValueOfUserInput);
                 } else if (convertedNumberSystem.equals("Hexidecimal")){
                     //convert to binary then hex
                 } else if (convertedNumberSystem.equals("Octal")){
@@ -120,14 +117,21 @@ public class MainActivity extends AppCompatActivity {
                 if (convertedNumberSystem.equals("Hexidecimal")){
                     //call binary to hex method
                 } else if (convertedNumberSystem.equals("Decimal")){
-                    //call binary to decimal method
+                    octNum = convertStringToArrayList(userInput);
+                    String intValueOfUserInput = String.valueOf(differentBaseToDeci("oct", octNum));
+                    TextView showOutputOctToDeci = (TextView) findViewById(R.id.computerOutputText);
+                    showOutputOctToDeci.setText(intValueOfUserInput);
+
                 }
             } else if (startingNumberSystem.equals("Hexidecimal")){//Convert to Binary then Octal or deci
                 //Convert to binary
                 if (convertedNumberSystem.equals("Octal")){
                     //call binary to octal method
                 } else if (convertedNumberSystem.equals("Decimal")){
-                    //call binary to decimal method
+                    hexNum = convertStringToArrayList(userInput);
+                    String intValueOfUserInput = String.valueOf(differentBaseToDeci("hex", hexNum));
+                    TextView showOutputHexToDeci = (TextView) findViewById(R.id.computerOutputText);
+                    showOutputHexToDeci.setText(intValueOfUserInput);
                 }
             }
         }
@@ -191,15 +195,15 @@ public class MainActivity extends AppCompatActivity {
 
             for (int p = 0; p < numGiven.size();p++){
 
-                deciNum += Math.pow(8,p) * (int)numGiven.get(p);
+                deciNum += Math.pow(8,p) * Integer.parseInt((String)numGiven.get(p));
             }
         } else if (numSystem.equals("hex")){//numSystem.equals("hex")
             for (int i = 0; i < numGiven.size(); i++){
                 System.out.print("decinum in loop " + deciNum);
                 if ("1234567890".contains(String.valueOf(numGiven.get(i)))){//adds int values from hex to decivalue
-                    deciNum += Math.pow(16,i) * (int)numGiven.get(i);
+                    deciNum += Math.pow(16,i) * Integer.parseInt((String)numGiven.get(i));
                 } else {//adds letter values from hex to decivalue
-                    deciNum += Math.pow(16,i) * Integer.valueOf(hexToBinTable.get(String.valueOf(numGiven.get(i))));
+                    deciNum += Math.pow(16,i) * Integer.valueOf(hexToDeciTable.get(String.valueOf(numGiven.get(i))));
                 }
             }
         }
@@ -249,16 +253,18 @@ public class MainActivity extends AppCompatActivity {
         return array;
     }
 
-    //TODO: Finish method
+    //converts ArrayList to String
+    //returns String
     public String convertArrayListToString(ArrayList arrayList){
        String string = "";
+       for (int i = 0; i < arrayList.size(); i++){
+           string += arrayList.get(arrayList.size() - (i + 1));
+       }
        return string;
     }
 
     //TODO: Finish method
     public ArrayList reverseArrayList(ArrayList array){
-
-
         ArrayList reversedArray = new ArrayList();
         System.out.println("insidereverse " + array.size());
         for (int i = 0; i < array.size(); i++){
