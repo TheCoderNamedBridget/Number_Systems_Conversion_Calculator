@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name='Conversion Calculator(Decimal,Binary,Hexidecimal,Octal)'
+rootProject.name='Conversion Calculator'

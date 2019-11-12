@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.conversioncalculatordecimalbinaryhexidecimaloctal"
+        applicationId "com.convert.conversioncalculator"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1

@@ -1,4 +1,4 @@
-package com.example.conversioncalculatordecimalbinaryhexidecimaloctal;
+package com.convert.conversioncalculator;
 
 import org.junit.Test;
 

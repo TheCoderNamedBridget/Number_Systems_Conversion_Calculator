@@ -1,4 +1,4 @@
-package com.example.conversioncalculatordecimalbinaryhexidecimaloctal;
+package com.convert.conversioncalculator;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.conversioncalculatordecimalbinaryhexidecimaloctal", appContext.getPackageName());
+        assertEquals("com.convert.conversioncalculator", appContext.getPackageName());
     }
 }
