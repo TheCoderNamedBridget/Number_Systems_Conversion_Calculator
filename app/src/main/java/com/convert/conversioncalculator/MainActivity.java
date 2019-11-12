@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.convert.conversioncalculator.R;
 
@@ -15,7 +16,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     String userInput = "";
-    ArrayList<Integer> binNum = new ArrayList<>();//set equal to user input
+    ArrayList<Integer> binNum = new ArrayList<>(userInput.length());//set equal to user input
     ArrayList<Integer> hexOrOctNum = new ArrayList<>();//set equal to user input
     String numSystem = "hex";
 
@@ -32,17 +33,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeHexAndOctalHashes();
-        binNum.add(1);
-        binNum.add(1);
-        binNum.add(1);
-        binNum.add(1);
 
-        hexOrOctNum.add(1);
-        hexOrOctNum.add(1);
-        hexOrOctNum.add(1);
+
 
         setContentView(R.layout.activity_main);
-        convertStringToArrayList("101010");
+        //convertStringToArrayList("101010");
         //differentBaseToDeci(numSystem, hexOrOctNum);
 //        binToDeci(binNum);
 //        deciToWholeBin(100);
@@ -109,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else if (startingNumberSystem.equals("Binary")){//Convert to oct hex or deci
                 if (convertedNumberSystem.equals("Decimal")){//TODO FIX THIS: number is being converted correctly but array is coming in in reverse order of what the user sees, wrigt reverse array method
+                    binNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(binToDeci(binNum));
+                    System.out.println("Insidelogic " + intValueOfUserInput);
                     TextView showOutputDeciToBin = (TextView) findViewById(R.id.computerOutputText);
                     showOutputDeciToBin.setText(intValueOfUserInput);
                 } else if (convertedNumberSystem.equals("Hexidecimal")){
@@ -140,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
     //Works for whole numbers
     public int binToDeci(ArrayList binNum){
         int deciNum = 0;
+
         for (int i = 0; i < binNum.size(); i++){
 
             if (binNum.get(i).toString().equals("1")){
@@ -238,12 +236,21 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO: Finish method
     public ArrayList convertStringToArrayList(String string){
-        ArrayList array = new ArrayList();
-        for (int i = string.length(); i < 3; i--){
-            array.add(string.substring(i - 2, i - 1));
-            System.out.print(string.substring(i - 2, i - 1));
-        }
+        System.out.println("insidestringtoarraylist " + userInput);
+        ArrayList array = new ArrayList(userInput.length());
+        System.out.println("sizeofstringinconvert " + userInput.length());
+        System.out.println(" Substring being added " + string.substring(3, 4 ));
+        System.out.println(" Substring being added " + string.substring(2, 3 ));
+        System.out.println(" Substring being added " + string.substring(1, 2 ));
+        System.out.println(" Substring being added " + string.substring(0, 1 ));
+        System.out.println(" Substring being added " + string.substring(0, 1 ));
+        for (int i = 0; i < string.length(); i++){
+            System.out.println(" Substring being added " + string.substring(string.length() - (i + 1), string.length() - i));
+            array.add(string.substring(string.length() - (i + 1), string.length() - i));
 
+        }
+        System.out.println("arraysizeafterloopconvert " + array.size());
+        binNum = array;
         return array;
     }
 
@@ -254,89 +261,164 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //TODO: Finish method
-    public void reverseArrayList(){
+    public ArrayList reverseArrayList(ArrayList array){
 
+
+        ArrayList reversedArray = new ArrayList();
+        System.out.println("insidereverse " + array.size());
+        for (int i = 0; i < array.size(); i++){
+            System.out.println("Value being added " + (array.get(array.size() - (1 + i))));
+            reversedArray.add(array.get(array.size() - (1 + i)));
+            System.out.println("Value of i " + i + " Array size " + array.size());
+        }
+        System.out.println("insidereverse outisde of loop");
+        return reversedArray;
     }
 
     public void buttonOneClicked (View view){
-        userInput += 1;
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen){
+            userInput += 1;
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
+
     }
     public void buttonTwoClicked (View view){
-        userInput += 2;
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += 2;
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonThreeClicked (View view){
-        userInput += 3;
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += 3;
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonFourClicked (View view){
-        userInput += 4;
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += 4;
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonFiveClicked (View view){
-        userInput += 5;
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += 5;
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonSixClicked (View view){
-        userInput += 6;
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += 6;
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonSevenClicked (View view){
-        userInput += 7;
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += 7;
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonEightClicked (View view){
-        userInput += 8;
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += 8;
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonNineClicked (View view){
-        userInput += 9;
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += 9;
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonZeroClicked (View view){
-        userInput += 0;
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += 0;
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonAClicked (View view){
-        userInput += "A";
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += "A";
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonBClicked (View view){
-        userInput += "B";
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += "B";
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonCClicked (View view){
-        userInput += "C";
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += "C";
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonDClicked (View view){
-        userInput += "D";
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += "D";
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonEClicked (View view){
-        userInput += "E";
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += "E";
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
     public void buttonFClicked (View view){
-        userInput += "F";
-        TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
-        textViewToChange.setText(userInput);
+        if (!startingNumChosen){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+        } else if (startingNumChosen) {
+            userInput += "F";
+            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            textViewToChange.setText(userInput);
+        }
     }
 
     public void delRecentChar (View view){
