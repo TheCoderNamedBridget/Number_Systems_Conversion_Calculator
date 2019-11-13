@@ -91,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         if (startingNumChosen = true && convertingNumChosen == true){
 
             if (startingNumberSystem.equals("Decimal")){
+                //convert to binary works
+                //TODO: convert to octal and hex
                 if (convertedNumberSystem.equals("Binary")){//TODO write conversion arrarylist to string method
                     String intValueOfUserInput = convertArrayListToString(deciToWholeBin(Integer.valueOf(userInput)));
                     TextView showOutputDeciToBin = (TextView) findViewById(R.id.computerOutputText);
@@ -101,7 +103,9 @@ public class MainActivity extends AppCompatActivity {
                     //convert to binary then oct
                 }
             } else if (startingNumberSystem.equals("Binary")){//Convert to oct hex or deci
-                if (convertedNumberSystem.equals("Decimal")){//TODO FIX THIS: number is being converted correctly but array is coming in in reverse order of what the user sees, wrigt reverse array method
+                //convert to decimal works
+                //TODO: convert to octal and hex
+                if (convertedNumberSystem.equals("Decimal")){
                     binNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(binToDeci(binNum));
                     System.out.println("Insidelogic " + intValueOfUserInput);
@@ -110,21 +114,33 @@ public class MainActivity extends AppCompatActivity {
                 } else if (convertedNumberSystem.equals("Hexidecimal")){
                     //call binary to hex method
                 } else if (convertedNumberSystem.equals("Octal")){
+                    octNum = convertStringToArrayList(userInput);
+                    //convertArrayListToString(binToHexOrOct("oct",octNum));
                     //call bainry to oct method
                 }
             } else if (startingNumberSystem.equals("Octal")){//Convert to Binary then hex or deci
-                //Convert to binary
-                if (convertedNumberSystem.equals("Hexidecimal")){
+                //Octal to Binary and Decimal works
+                //TODO: finish octal to hexidecimal
+                octNum = convertStringToArrayList(userInput);
+                String binaryValue = convertArrayListToString(hexOrOctToBinary("oct", octNum));
+                if (convertedNumberSystem.equals("Hexidecimal")){//TODO: Finish this
                     //call binary to hex method
+                    binToHexOrOct("hex",hexOrOctToBinary("oct", octNum));
                 } else if (convertedNumberSystem.equals("Decimal")){
                     octNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(differentBaseToDeci("oct", octNum));
                     TextView showOutputOctToDeci = (TextView) findViewById(R.id.computerOutputText);
                     showOutputOctToDeci.setText(intValueOfUserInput);
-
+                } else if (convertedNumberSystem.equals("Binary")){//works now
+                    TextView showOutputOctToBin = (TextView) findViewById(R.id.computerOutputText);
+                    showOutputOctToBin.setText(binaryValue);
                 }
             } else if (startingNumberSystem.equals("Hexidecimal")){//Convert to Binary then Octal or deci
+                //Convert to decimal/binary works
+                //TODO: finish convert to octal
                 //Convert to binary
+                hexNum = convertStringToArrayList(userInput);
+                String binaryValue = convertArrayListToString(hexOrOctToBinary("hex", hexNum));
                 if (convertedNumberSystem.equals("Octal")){
                     //call binary to octal method
                 } else if (convertedNumberSystem.equals("Decimal")){
@@ -132,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
                     String intValueOfUserInput = String.valueOf(differentBaseToDeci("hex", hexNum));
                     TextView showOutputHexToDeci = (TextView) findViewById(R.id.computerOutputText);
                     showOutputHexToDeci.setText(intValueOfUserInput);
+                } else if (convertedNumberSystem.equals("Binary")){//works now
+                    TextView showOutputHexToBin = (TextView) findViewById(R.id.computerOutputText);
+                    showOutputHexToBin.setText(binaryValue);
                 }
             }
         }
@@ -225,18 +244,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //TODO finish class
+    //converts hex or oct value to binary
+    //returns arraylist of binary
     public ArrayList hexOrOctToBinary(String numSystem, ArrayList hexOrOctNum){
         String binaryValue = "";
         ArrayList<Integer> binaryNum = new ArrayList();
         if (numSystem.equals("hex")){
             for (int i  = 0; i < hexOrOctNum.size(); i++){
-                binaryValue += hexToBinTable.get(hexOrOctNum.get(i));
+                binaryValue += hexToBinTable.get(hexOrOctNum.get(hexOrOctNum.size()- (i+1)));
             }
-
+        } else if (numSystem.equals("oct")){
+            for (int i  = 0; i < hexOrOctNum.size(); i++){
+                binaryValue += octToBinTable.get(hexOrOctNum.get(hexOrOctNum.size()- (i+1)));
+            }
         }
+        binaryNum = convertStringToArrayList(binaryValue);
         //call method to convert String to ArrayList
-        return hexOrOctNum;
+        return binaryNum;
     }
 
     //TODO: Finish method
