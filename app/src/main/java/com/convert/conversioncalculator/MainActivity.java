@@ -124,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
                 octNum = convertStringToArrayList(userInput);
                 String binaryValue = convertArrayListToString(hexOrOctToBinary("oct", octNum));
                 if (convertedNumberSystem.equals("Hexidecimal")){//TODO: Finish this
-                    //call binary to hex method
-                    binToHexOrOct("hex",hexOrOctToBinary("oct", octNum));
+                    //convert oct to bin
+                    //convert bin to hex
                 } else if (convertedNumberSystem.equals("Decimal")){
                     octNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(differentBaseToDeci("oct", octNum));
@@ -142,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
                 hexNum = convertStringToArrayList(userInput);
                 String binaryValue = convertArrayListToString(hexOrOctToBinary("hex", hexNum));
                 if (convertedNumberSystem.equals("Octal")){
-                    //call binary to octal method
+                    //convert hex to bin
+                    //convert bin to oct
                 } else if (convertedNumberSystem.equals("Decimal")){
                     hexNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(differentBaseToDeci("hex", hexNum));
@@ -236,11 +237,23 @@ public class MainActivity extends AppCompatActivity {
     //TODO finish class
     public void binToHexOrOct(String numSystem, ArrayList binNum){
         //convert binNum to String
-        String testBinNum;
-        numSystem = "hex";
+        String binNumString = convertArrayListToString(binNum);
+        String hexNumStringValue = "";
+        String octNumStringValue = "";
+
         if (numSystem.equals("hex")){
-            //add 0 to end of array until ArrayList.size % 4 == 0
+
+            while (binNumString.length() % 4 != 0){
+                binNumString = binNumString + "0";
+            }
+            //hexNumStringValue = hexNumStringValue + binToHexConversionmap(binNumString.substring(string.length()-4, string.length-1))
             //look up binary value to hex
+        } else if (numSystem.equals("oct")){
+            while (binNumString.length() % 3 != 0){
+                binNumString = binNumString + "0";
+            }
+            //octNumStringValue = octNumStringValue + binToOctConversionmap(binNumString.substring(string.length()-4, string.length-1))
+            //look up binary value to oct
         }
     }
 
