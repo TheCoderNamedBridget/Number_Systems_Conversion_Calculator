@@ -13,10 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO: Finish bin to hex/oct method
-//TODO: Test all calculator functionality
 //TODO: Change theme of all buttons to make UX better
 //TODO: Write methods/logic to generate random practice problems
+//TODO: Write methods to show steps of the conversions
 
 //TODO: HOMESCREEN: Make home screen more intuitive -> button graphics better or add words
 
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         binToHexTable = new HashMap<>();
         binToHexTable.put("0000", "0");
-        binToHexTable.put("0001", "2");
+        binToHexTable.put("0001", "1");
         binToHexTable.put("0010", "2");
         binToHexTable.put("0011", "3");
         binToHexTable.put("0100", "4");
@@ -126,78 +125,86 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //TODO finish this class
+    //Runs logic of entire calculator
+    //Conversion methods are called here
+    //Display to activities are called here
     public void calculateConvertedValue(View view){
-        if (startingNumChosen = true && convertingNumChosen == true){
+        if (startingNumChosen == true && convertingNumChosen == true){
 
             if (startingNumberSystem.equals("Decimal")){
-                //convert to binary works
-                //TODO: convert to octal and hex
-                if (convertedNumberSystem.equals("Binary")){//TODO write conversion arrarylist to string method
-                    String intValueOfUserInput = convertArrayListToString(deciToWholeBin(Integer.valueOf(userInput)));
-                    TextView showOutputDeciToBin = (TextView) findViewById(R.id.computerOutputText);
-                    showOutputDeciToBin.setText(intValueOfUserInput);
+                //convert to binary, octal, hex works
+                ArrayList binaryValueOfUser = deciToWholeBin(Integer.valueOf(userInput));
+                if (convertedNumberSystem.equals("Binary")){
+                    String stringBinaryValueOfUser = convertArrayListToString(deciToWholeBin(Integer.valueOf(userInput)));
+                    TextView showOutputDeciToBin = findViewById(R.id.computerOutputText);
+                    showOutputDeciToBin.setText(stringBinaryValueOfUser);
                 } else if (convertedNumberSystem.equals("Hexidecimal")){
                     //convert to binary then hex
+                    String deciToHex = binToHexOrOct("hex", binaryValueOfUser);
+                    TextView showOutputDeciToHex = findViewById(R.id.computerOutputText);
+                    showOutputDeciToHex.setText(deciToHex);
                 } else if (convertedNumberSystem.equals("Octal")){
-                    //convert to binary then oct
+                    String deciToOct = binToHexOrOct("oct", binaryValueOfUser);
+                    TextView showOutputDeciToOct = findViewById(R.id.computerOutputText);
+                    showOutputDeciToOct.setText(deciToOct);
                 }
             } else if (startingNumberSystem.equals("Binary")){//Convert to oct hex or deci
-                //convert to decimal works
-                //TODO: convert to octal and hex
+                //convert to decimal,oct,hex works
                 if (convertedNumberSystem.equals("Decimal")){
                     binNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(binToDeci(binNum));
                     System.out.println("Insidelogic " + intValueOfUserInput);
-                    TextView showOutputBinToDeci = (TextView) findViewById(R.id.computerOutputText);
+                    TextView showOutputBinToDeci = findViewById(R.id.computerOutputText);
                     showOutputBinToDeci.setText(intValueOfUserInput);
                 } else if (convertedNumberSystem.equals("Hexidecimal")){
                     hexNum = convertStringToArrayList(userInput);
                     String hexValue = binToHexOrOct("hex",hexNum);
                     System.out.println("octalValue " + hexValue);
-                    TextView showOutputBinToHex = (TextView) findViewById(R.id.computerOutputText);
+                    TextView showOutputBinToHex = findViewById(R.id.computerOutputText);
                     showOutputBinToHex.setText(hexValue);
                 } else if (convertedNumberSystem.equals("Octal")){
                     octNum = convertStringToArrayList(userInput);
                     String octalValue = binToHexOrOct("oct",octNum);
                     System.out.println("octalValue " + octalValue);
-                    TextView showOutputBinToOct = (TextView) findViewById(R.id.computerOutputText);
+                    TextView showOutputBinToOct = findViewById(R.id.computerOutputText);
                     showOutputBinToOct.setText(octalValue);
-
                 }
             } else if (startingNumberSystem.equals("Octal")){//Convert to Binary then hex or deci
-                //Octal to Binary and Decimal works
-                //TODO: finish octal to hexidecimal
+                //Octal to Binary, Decimal, hex works
                 octNum = convertStringToArrayList(userInput);
                 String binaryValue = convertArrayListToString(hexOrOctToBinary("oct", octNum));
-                if (convertedNumberSystem.equals("Hexidecimal")){//TODO: Finish this
-                    //convert oct to bin
-                    //convert bin to hex
+                System.out.println("binaryValueinoctal " + binaryValue);
+                if (convertedNumberSystem.equals("Hexidecimal")){
+                    String hexValue = binToHexOrOct("hex",convertStringToArrayList(binaryValue));
+                    System.out.println("hexValueinoctal " + hexValue);
+                    TextView showOutputOctToHex = findViewById(R.id.computerOutputText);
+                    showOutputOctToHex.setText(hexValue);
                 } else if (convertedNumberSystem.equals("Decimal")){
                     octNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(differentBaseToDeci("oct", octNum));
-                    TextView showOutputOctToDeci = (TextView) findViewById(R.id.computerOutputText);
+                    TextView showOutputOctToDeci = findViewById(R.id.computerOutputText);
                     showOutputOctToDeci.setText(intValueOfUserInput);
                 } else if (convertedNumberSystem.equals("Binary")){//works now
-                    TextView showOutputOctToBin = (TextView) findViewById(R.id.computerOutputText);
+                    TextView showOutputOctToBin = findViewById(R.id.computerOutputText);
                     showOutputOctToBin.setText(binaryValue);
                 }
             } else if (startingNumberSystem.equals("Hexidecimal")){//Convert to Binary then Octal or deci
-                //Convert to decimal/binary works
-                //TODO: finish convert to octal
+                //Convert to decimal/binary/hex works
                 //Convert to binary
                 hexNum = convertStringToArrayList(userInput);
                 String binaryValue = convertArrayListToString(hexOrOctToBinary("hex", hexNum));
                 if (convertedNumberSystem.equals("Octal")){
-                    //convert hex to bin
-                    //convert bin to oct
+                    String octValue = binToHexOrOct("oct",convertStringToArrayList(binaryValue));
+                    System.out.println("octValueinhex " + octValue);
+                    TextView showOutputHexToOct = findViewById(R.id.computerOutputText);
+                    showOutputHexToOct.setText(octValue);
                 } else if (convertedNumberSystem.equals("Decimal")){
                     hexNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(differentBaseToDeci("hex", hexNum));
-                    TextView showOutputHexToDeci = (TextView) findViewById(R.id.computerOutputText);
+                    TextView showOutputHexToDeci = findViewById(R.id.computerOutputText);
                     showOutputHexToDeci.setText(intValueOfUserInput);
                 } else if (convertedNumberSystem.equals("Binary")){//works now
-                    TextView showOutputHexToBin = (TextView) findViewById(R.id.computerOutputText);
+                    TextView showOutputHexToBin = findViewById(R.id.computerOutputText);
                     showOutputHexToBin.setText(binaryValue);
                 }
             }
@@ -286,6 +293,7 @@ public class MainActivity extends AppCompatActivity {
     public String binToHexOrOct(String numSystem, ArrayList binNum){
         //convert binNum to String
         String binNumString = convertArrayListToString(binNum);
+        System.out.println("EXTRAZERO? " + binNumString);
         String hexNumStringValue = "";
         String octNumStringValue = "";
 
@@ -299,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
                 hexNumStringValue = binToHexTable.get(binNumString.substring(binNumString.length()-(4*i + 4), binNumString.length()-(4*i))) + hexNumStringValue;
             }
 
-            System.out.println(hexNumStringValue);
+            System.out.println("hexNumStringValue " + hexNumStringValue);
             return hexNumStringValue;
         } else if (numSystem.equals("oct")){
             while (binNumString.length() % 3 != 0){
@@ -320,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
     //returns arraylist of binary
     public ArrayList hexOrOctToBinary(String numSystem, ArrayList hexOrOctNum){
         String binaryValue = "";
-        ArrayList<Integer> binaryNum = new ArrayList();
+        ArrayList<Integer> binaryNum;
         if (numSystem.equals("hex")){
             for (int i  = 0; i < hexOrOctNum.size(); i++){
                 binaryValue += hexToBinTable.get(hexOrOctNum.get(hexOrOctNum.size()- (i+1)));
@@ -335,7 +343,8 @@ public class MainActivity extends AppCompatActivity {
         return binaryNum;
     }
 
-    //TODO: Finish method
+    //converts string to arraylist
+    //returns ArrayList
     public ArrayList convertStringToArrayList(String string){
         System.out.println("insidestringtoarraylist " + userInput);
         ArrayList array = new ArrayList(userInput.length());
@@ -359,6 +368,8 @@ public class MainActivity extends AppCompatActivity {
        return string;
     }
 
+    //Reverses order of ArrayList
+    //returns ArrayList
     public ArrayList reverseArrayList(ArrayList array){
         ArrayList reversedArray = new ArrayList();
         System.out.println("insidereverse " + array.size());
@@ -371,13 +382,12 @@ public class MainActivity extends AppCompatActivity {
         return reversedArray;
     }
 
-
     public void buttonOneClicked (View view){
         if (!startingNumChosen){
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen){
             userInput += 1;
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
 
@@ -387,7 +397,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += 2;
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -396,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += 3;
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -405,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += 4;
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -414,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += 5;
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -423,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += 6;
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -432,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += 7;
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -441,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += 8;
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -450,7 +460,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += 9;
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -459,7 +469,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += 0;
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -468,7 +478,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += "A";
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -477,7 +487,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += "B";
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -486,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += "C";
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -495,7 +505,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += "D";
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -504,7 +514,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += "E";
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -513,7 +523,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
         } else if (startingNumChosen) {
             userInput += "F";
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -522,18 +532,18 @@ public class MainActivity extends AppCompatActivity {
         if (userInput.equals("") && !convertedNumberSystem.equals("")){
             convertedNumberSystem = "";
             convertingNumChosen = false;
-            TextView endNumSys = (TextView) findViewById(R.id.convertedNumberSystemText);
+            TextView endNumSys = findViewById(R.id.convertedNumberSystemText);
             endNumSys.setText(convertedNumberSystem);
         } else if (userInput.equals("") && !startingNumberSystem.equals("")){
             startingNumberSystem = "";
             startingNumChosen = false;
             makeLettersGoneOrVisible("visible");
             makeNumbersGoneOrVisible("visible");
-            TextView beginNumSys = (TextView) findViewById(R.id.startingNumberSystemText);
+            TextView beginNumSys = findViewById(R.id.startingNumberSystemText);
             beginNumSys.setText(startingNumberSystem);
         } else if (!userInput.equals("")){
             userInput = userInput.substring(0,userInput.length() - 1);
-            TextView textViewToChange = (TextView) findViewById(R.id.userInputText);
+            TextView textViewToChange = findViewById(R.id.userInputText);
             textViewToChange.setText(userInput);
         }
     }
@@ -547,13 +557,13 @@ public class MainActivity extends AppCompatActivity {
         computerOutputText = "";
         startingNumChosen = false;
         convertingNumChosen = false;
-        TextView beginNumSys = (TextView) findViewById(R.id.startingNumberSystemText);
+        TextView beginNumSys = findViewById(R.id.startingNumberSystemText);
         beginNumSys.setText(startingNumberSystem);
-        TextView endNumSys = (TextView) findViewById(R.id.convertedNumberSystemText);
+        TextView endNumSys = findViewById(R.id.convertedNumberSystemText);
         endNumSys.setText(convertedNumberSystem);
-        TextView userInputToChange = (TextView) findViewById(R.id.userInputText);
+        TextView userInputToChange = findViewById(R.id.userInputText);
         userInputToChange.setText(userInput);
-        TextView computerOutputToChange = (TextView) findViewById(R.id.computerOutputText);
+        TextView computerOutputToChange = findViewById(R.id.computerOutputText);
         computerOutputToChange.setText(userInput);
     }
 
@@ -561,14 +571,14 @@ public class MainActivity extends AppCompatActivity {
         if (!startingNumChosen){
             startingNumChosen = true;
             startingNumberSystem += "Binary";
-            TextView textViewToChange = (TextView) findViewById(R.id.startingNumberSystemText);
+            TextView textViewToChange = findViewById(R.id.startingNumberSystemText);
             textViewToChange.setText(startingNumberSystem);
             makeLettersGoneOrVisible("gone");
             makeNumbersGoneOrVisible("gone");
         } else if (!convertingNumChosen && !startingNumberSystem.equals("Binary")){
             convertingNumChosen = true;
             convertedNumberSystem += "Binary";
-            TextView textViewToChange = (TextView) findViewById(R.id.convertedNumberSystemText);
+            TextView textViewToChange = findViewById(R.id.convertedNumberSystemText);
             textViewToChange.setText(convertedNumberSystem);
         }
     }
@@ -577,13 +587,13 @@ public class MainActivity extends AppCompatActivity {
         if (!startingNumChosen){
             startingNumChosen = true;
             startingNumberSystem += "Decimal";
-            TextView textViewToChange = (TextView) findViewById(R.id.startingNumberSystemText);
+            TextView textViewToChange = findViewById(R.id.startingNumberSystemText);
             textViewToChange.setText(startingNumberSystem);
             makeLettersGoneOrVisible("gone");
         } else if (!convertingNumChosen && !startingNumberSystem.equals("Decimal")){
             convertingNumChosen = true;
             convertedNumberSystem += "Decimal";
-            TextView textViewToChange = (TextView) findViewById(R.id.convertedNumberSystemText);
+            TextView textViewToChange = findViewById(R.id.convertedNumberSystemText);
             textViewToChange.setText(convertedNumberSystem);
         }
     }
@@ -592,12 +602,12 @@ public class MainActivity extends AppCompatActivity {
         if (!startingNumChosen){
             startingNumChosen = true;
             startingNumberSystem += "Hexidecimal";
-            TextView textViewToChange = (TextView) findViewById(R.id.startingNumberSystemText);
+            TextView textViewToChange = findViewById(R.id.startingNumberSystemText);
             textViewToChange.setText(startingNumberSystem);
         } else if (!convertingNumChosen && !startingNumberSystem.equals("Hexidecimal")){
             convertingNumChosen = true;
             convertedNumberSystem += "Hexidecimal";
-            TextView textViewToChange = (TextView) findViewById(R.id.convertedNumberSystemText);
+            TextView textViewToChange = findViewById(R.id.convertedNumberSystemText);
             textViewToChange.setText(convertedNumberSystem);
         }
     }
@@ -606,13 +616,13 @@ public class MainActivity extends AppCompatActivity {
         if (!startingNumChosen){
             startingNumChosen = true;
             startingNumberSystem += "Octal";
-            TextView textViewToChange = (TextView) findViewById(R.id.startingNumberSystemText);
+            TextView textViewToChange = findViewById(R.id.startingNumberSystemText);
             textViewToChange.setText(startingNumberSystem);
             makeLettersGoneOrVisible("gone");
         } else if (!convertingNumChosen && !startingNumberSystem.equals("Octal")){
             convertingNumChosen = true;
             convertedNumberSystem += "Octal";
-            TextView textViewToChange = (TextView) findViewById(R.id.convertedNumberSystemText);
+            TextView textViewToChange = findViewById(R.id.convertedNumberSystemText);
             textViewToChange.setText(convertedNumberSystem);
         }
     }
