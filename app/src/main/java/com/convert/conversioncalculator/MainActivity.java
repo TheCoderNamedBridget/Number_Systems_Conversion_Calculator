@@ -13,6 +13,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+//TODO: Finish bin to hex/oct method
+//TODO: Test all calculator functionality
+//TODO: Change theme of all buttons to make UX better
+//TODO: Write methods/logic to generate random practice problems
+
+//TODO: HOMESCREEN: Make home screen more intuitive -> button graphics better or add words
+
+//TODO: CALCULATORCREEN: Fix button alighnment on calculator. Right most butttons are touching the edge of screen
+//TODO: CALCULATORCREEN: Make text disappear or more descriptive of what is being shown
+
+//TODO: PRACTICEPROBLEMSCREEN: make UI and UX intuitive/usable
+
+
 public class MainActivity extends AppCompatActivity {
 
     String userInput = "";
@@ -30,22 +43,48 @@ public class MainActivity extends AppCompatActivity {
     public static Map<String, String> hexToDeciTable;
     public static Map<String, String> octToBinTable;
 
+    public static Map<String, String> binToOctTable;
+    public static Map<String, String> binToHexTable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeHexAndOctalHashes();
 
-
-
         setContentView(R.layout.activity_main);
-        //convertStringToArrayList("101010");
-        //differentBaseToDeci(numSystem, hexOrOctNum);
-//        binToDeci(binNum);
-//        deciToWholeBin(100);
     }
 
     //Initializes key for Hex and Oct values
     public void initializeHexAndOctalHashes (){
+        binToOctTable = new HashMap<>();
+        binToOctTable.put("000", "0");
+        binToOctTable.put("001", "1");
+        binToOctTable.put("010", "2");
+        binToOctTable.put("011", "3");
+        binToOctTable.put("100", "4");
+        binToOctTable.put("101", "5");
+        binToOctTable.put("110", "6");
+        binToOctTable.put("111", "7");
+        binToOctTable.put("1000", "8");
+        binToOctTable.put("1001", "9");
+
+        binToHexTable = new HashMap<>();
+        binToHexTable.put("0000", "0");
+        binToHexTable.put("0001", "2");
+        binToHexTable.put("0010", "2");
+        binToHexTable.put("0011", "3");
+        binToHexTable.put("0100", "4");
+        binToHexTable.put("0101", "5");
+        binToHexTable.put("0110", "6");
+        binToHexTable.put("0111", "7");
+        binToHexTable.put("1000", "8");
+        binToHexTable.put("1001", "9");
+        binToHexTable.put("1010", "A");
+        binToHexTable.put("1011", "B");
+        binToHexTable.put("1100", "C");
+        binToHexTable.put("1101", "D");
+        binToHexTable.put("1110", "E");
+        binToHexTable.put("1111", "F");
 
         hexToBinTable = new HashMap<>();
         hexToBinTable.put("0", "0000");
@@ -83,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         octToBinTable.put("6", "110");
         octToBinTable.put("7", "111");
         octToBinTable.put("8", "1000");
+        octToBinTable.put("9", "1001");
 
     }
 
@@ -109,14 +149,21 @@ public class MainActivity extends AppCompatActivity {
                     binNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(binToDeci(binNum));
                     System.out.println("Insidelogic " + intValueOfUserInput);
-                    TextView showOutputDeciToBin = (TextView) findViewById(R.id.computerOutputText);
-                    showOutputDeciToBin.setText(intValueOfUserInput);
+                    TextView showOutputBinToDeci = (TextView) findViewById(R.id.computerOutputText);
+                    showOutputBinToDeci.setText(intValueOfUserInput);
                 } else if (convertedNumberSystem.equals("Hexidecimal")){
-                    //call binary to hex method
+                    hexNum = convertStringToArrayList(userInput);
+                    String hexValue = binToHexOrOct("hex",hexNum);
+                    System.out.println("octalValue " + hexValue);
+                    TextView showOutputBinToHex = (TextView) findViewById(R.id.computerOutputText);
+                    showOutputBinToHex.setText(hexValue);
                 } else if (convertedNumberSystem.equals("Octal")){
                     octNum = convertStringToArrayList(userInput);
-                    //convertArrayListToString(binToHexOrOct("oct",octNum));
-                    //call bainry to oct method
+                    String octalValue = binToHexOrOct("oct",octNum);
+                    System.out.println("octalValue " + octalValue);
+                    TextView showOutputBinToOct = (TextView) findViewById(R.id.computerOutputText);
+                    showOutputBinToOct.setText(octalValue);
+
                 }
             } else if (startingNumberSystem.equals("Octal")){//Convert to Binary then hex or deci
                 //Octal to Binary and Decimal works
@@ -234,8 +281,9 @@ public class MainActivity extends AppCompatActivity {
         return deciNum;
     }
 
-    //TODO finish class
-    public void binToHexOrOct(String numSystem, ArrayList binNum){
+    //converts binary value to hex or oct
+    //returns String
+    public String binToHexOrOct(String numSystem, ArrayList binNum){
         //convert binNum to String
         String binNumString = convertArrayListToString(binNum);
         String hexNumStringValue = "";
@@ -244,17 +292,28 @@ public class MainActivity extends AppCompatActivity {
         if (numSystem.equals("hex")){
 
             while (binNumString.length() % 4 != 0){
-                binNumString = binNumString + "0";
+                binNumString = "0" + binNumString;
             }
-            //hexNumStringValue = hexNumStringValue + binToHexConversionmap(binNumString.substring(string.length()-4, string.length-1))
-            //look up binary value to hex
+            for (int i = 0; i < binNumString.length()/4; i++){
+                System.out.println("HEXTESTING Substring of binary value " + binNumString.substring(binNumString.length()-(4*i + 4), binNumString.length()-4*i));
+                hexNumStringValue = binToHexTable.get(binNumString.substring(binNumString.length()-(4*i + 4), binNumString.length()-(4*i))) + hexNumStringValue;
+            }
+
+            System.out.println(hexNumStringValue);
+            return hexNumStringValue;
         } else if (numSystem.equals("oct")){
             while (binNumString.length() % 3 != 0){
-                binNumString = binNumString + "0";
+                binNumString = "0" + binNumString;
             }
-            //octNumStringValue = octNumStringValue + binToOctConversionmap(binNumString.substring(string.length()-4, string.length-1))
-            //look up binary value to oct
+            System.out.println("OCTALTESTING Binary Value: " + binNumString + " octNumStringValue " + octNumStringValue);
+            for (int i = 0; i < binNumString.length()/3; i++){
+                System.out.println("OCTALTESTING Substring of binary value " + binNumString.substring(binNumString.length()-(3*i + 3), binNumString.length()-3*i));
+                octNumStringValue = binToOctTable.get(binNumString.substring(binNumString.length()-(3*i + 3), binNumString.length()- 3*i)) + octNumStringValue ;
+            }
+            System.out.println(octNumStringValue);
+            return octNumStringValue;
         }
+        return "Nothing";
     }
 
     //converts hex or oct value to binary
@@ -300,7 +359,6 @@ public class MainActivity extends AppCompatActivity {
        return string;
     }
 
-    //TODO: Finish method
     public ArrayList reverseArrayList(ArrayList array){
         ArrayList reversedArray = new ArrayList();
         System.out.println("insidereverse " + array.size());
@@ -312,6 +370,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("insidereverse outisde of loop");
         return reversedArray;
     }
+
 
     public void buttonOneClicked (View view){
         if (!startingNumChosen){
