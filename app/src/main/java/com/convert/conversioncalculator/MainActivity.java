@@ -2,8 +2,10 @@ package com.convert.conversioncalculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +14,8 @@ import com.convert.conversioncalculator.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static java.security.AccessController.getContext;
 
 //TODO: Change theme of all buttons to make UX better
 //TODO: Write methods/logic to generate random practice problems
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     String convertedNumberSystem = "";
     Boolean convertingNumChosen = false;
 
+    String curScreen = "";
     public static Map<String, String> hexToBinTable;
     public static Map<String, String> hexToDeciTable;
     public static Map<String, String> octToBinTable;
@@ -125,10 +130,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void callCalculateFromActivity(View view){
+        calculateConvertedValue("Activity");
+        curScreen = "calculator";
+    }
     //Runs logic of entire calculator
     //Conversion methods are called here
     //Display to activities are called here
-    public void calculateConvertedValue(View view){
+    public String calculateConvertedValue(String whereIsTheCallFrom){
         if (startingNumChosen == true && convertingNumChosen == true){
 
             if (startingNumberSystem.equals("Decimal")){
@@ -136,17 +145,30 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList binaryValueOfUser = deciToWholeBin(Integer.valueOf(userInput));
                 if (convertedNumberSystem.equals("Binary")){
                     String stringBinaryValueOfUser = convertArrayListToString(deciToWholeBin(Integer.valueOf(userInput)));
-                    TextView showOutputDeciToBin = findViewById(R.id.computerOutputText);
-                    showOutputDeciToBin.setText(stringBinaryValueOfUser);
+                    if (whereIsTheCallFrom.equals("Activity")){
+                        TextView showOutputDeciToBin = findViewById(R.id.computerOutputText);
+                        showOutputDeciToBin.setText(stringBinaryValueOfUser);
+                    } else if (whereIsTheCallFrom.equals("Practice Problem")){
+                        return stringBinaryValueOfUser;
+                    }
+
                 } else if (convertedNumberSystem.equals("Hexidecimal")){
                     //convert to binary then hex
                     String deciToHex = binToHexOrOct("hex", binaryValueOfUser);
-                    TextView showOutputDeciToHex = findViewById(R.id.computerOutputText);
-                    showOutputDeciToHex.setText(deciToHex);
+                    if (whereIsTheCallFrom.equals("Activity")) {
+                        TextView showOutputDeciToHex = findViewById(R.id.computerOutputText);
+                        showOutputDeciToHex.setText(deciToHex);
+                    } else if (whereIsTheCallFrom.equals("Practice Problem")){
+                        return deciToHex;
+                    }
                 } else if (convertedNumberSystem.equals("Octal")){
                     String deciToOct = binToHexOrOct("oct", binaryValueOfUser);
-                    TextView showOutputDeciToOct = findViewById(R.id.computerOutputText);
-                    showOutputDeciToOct.setText(deciToOct);
+                    if (whereIsTheCallFrom.equals("Activity")) {
+                        TextView showOutputDeciToOct = findViewById(R.id.computerOutputText);
+                        showOutputDeciToOct.setText(deciToOct);
+                    } else if (whereIsTheCallFrom.equals("Practice Problem")){
+                        return deciToOct;
+                    }
                 }
             } else if (startingNumberSystem.equals("Binary")){//Convert to oct hex or deci
                 //convert to decimal,oct,hex works
@@ -154,20 +176,32 @@ public class MainActivity extends AppCompatActivity {
                     binNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(binToDeci(binNum));
                     System.out.println("Insidelogic " + intValueOfUserInput);
-                    TextView showOutputBinToDeci = findViewById(R.id.computerOutputText);
-                    showOutputBinToDeci.setText(intValueOfUserInput);
+                    if (whereIsTheCallFrom.equals("Activity")) {
+                        TextView showOutputBinToDeci = findViewById(R.id.computerOutputText);
+                        showOutputBinToDeci.setText(intValueOfUserInput);
+                    } else if (whereIsTheCallFrom.equals("Practice Problem")){
+                        return intValueOfUserInput;
+                    }
                 } else if (convertedNumberSystem.equals("Hexidecimal")){
                     hexNum = convertStringToArrayList(userInput);
                     String hexValue = binToHexOrOct("hex",hexNum);
                     System.out.println("octalValue " + hexValue);
-                    TextView showOutputBinToHex = findViewById(R.id.computerOutputText);
-                    showOutputBinToHex.setText(hexValue);
+                    if (whereIsTheCallFrom.equals("Activity")) {
+                        TextView showOutputBinToHex = findViewById(R.id.computerOutputText);
+                        showOutputBinToHex.setText(hexValue);
+                    } else if (whereIsTheCallFrom.equals("Practice Problem")){
+                        return hexValue;
+                    }
                 } else if (convertedNumberSystem.equals("Octal")){
                     octNum = convertStringToArrayList(userInput);
                     String octalValue = binToHexOrOct("oct",octNum);
                     System.out.println("octalValue " + octalValue);
-                    TextView showOutputBinToOct = findViewById(R.id.computerOutputText);
-                    showOutputBinToOct.setText(octalValue);
+                    if (whereIsTheCallFrom.equals("Activity")) {
+                        TextView showOutputBinToOct = findViewById(R.id.computerOutputText);
+                        showOutputBinToOct.setText(octalValue);
+                    } else if (whereIsTheCallFrom.equals("Practice Problem")){
+                        return octalValue;
+                    }
                 }
             } else if (startingNumberSystem.equals("Octal")){//Convert to Binary then hex or deci
                 //Octal to Binary, Decimal, hex works
@@ -177,16 +211,28 @@ public class MainActivity extends AppCompatActivity {
                 if (convertedNumberSystem.equals("Hexidecimal")){
                     String hexValue = binToHexOrOct("hex",convertStringToArrayList(binaryValue));
                     System.out.println("hexValueinoctal " + hexValue);
-                    TextView showOutputOctToHex = findViewById(R.id.computerOutputText);
-                    showOutputOctToHex.setText(hexValue);
+                    if (whereIsTheCallFrom.equals("Activity")) {
+                        TextView showOutputOctToHex = findViewById(R.id.computerOutputText);
+                        showOutputOctToHex.setText(hexValue);
+                    } else if (whereIsTheCallFrom.equals("Practice Problem")){
+                        return hexValue;
+                    }
                 } else if (convertedNumberSystem.equals("Decimal")){
                     octNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(differentBaseToDeci("oct", octNum));
-                    TextView showOutputOctToDeci = findViewById(R.id.computerOutputText);
-                    showOutputOctToDeci.setText(intValueOfUserInput);
+                    if (whereIsTheCallFrom.equals("Activity")) {
+                        TextView showOutputOctToDeci = findViewById(R.id.computerOutputText);
+                        showOutputOctToDeci.setText(intValueOfUserInput);
+                    } else if (whereIsTheCallFrom.equals("Practice Problem")){
+                        return intValueOfUserInput;
+                    }
                 } else if (convertedNumberSystem.equals("Binary")){//works now
-                    TextView showOutputOctToBin = findViewById(R.id.computerOutputText);
-                    showOutputOctToBin.setText(binaryValue);
+                    if (whereIsTheCallFrom.equals("Activity")) {
+                        TextView showOutputOctToBin = findViewById(R.id.computerOutputText);
+                        showOutputOctToBin.setText(binaryValue);
+                    } else if (whereIsTheCallFrom.equals("Practice Problem")){
+                        return binaryValue;
+                    }
                 }
             } else if (startingNumberSystem.equals("Hexidecimal")){//Convert to Binary then Octal or deci
                 //Convert to decimal/binary/hex works
@@ -196,19 +242,32 @@ public class MainActivity extends AppCompatActivity {
                 if (convertedNumberSystem.equals("Octal")){
                     String octValue = binToHexOrOct("oct",convertStringToArrayList(binaryValue));
                     System.out.println("octValueinhex " + octValue);
-                    TextView showOutputHexToOct = findViewById(R.id.computerOutputText);
-                    showOutputHexToOct.setText(octValue);
+                    if (whereIsTheCallFrom.equals("Activity")) {
+                        TextView showOutputHexToOct = findViewById(R.id.computerOutputText);
+                        showOutputHexToOct.setText(octValue);
+                    } else if (whereIsTheCallFrom.equals("Practice Problem")){
+                        return octValue;
+                    }
                 } else if (convertedNumberSystem.equals("Decimal")){
                     hexNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(differentBaseToDeci("hex", hexNum));
-                    TextView showOutputHexToDeci = findViewById(R.id.computerOutputText);
-                    showOutputHexToDeci.setText(intValueOfUserInput);
+                    if (whereIsTheCallFrom.equals("Activity")) {
+                        TextView showOutputHexToDeci = findViewById(R.id.computerOutputText);
+                        showOutputHexToDeci.setText(intValueOfUserInput);
+                    } else if (whereIsTheCallFrom.equals("Practice Problem")){
+                        return intValueOfUserInput;
+                    }
                 } else if (convertedNumberSystem.equals("Binary")){//works now
-                    TextView showOutputHexToBin = findViewById(R.id.computerOutputText);
-                    showOutputHexToBin.setText(binaryValue);
+                    if (whereIsTheCallFrom.equals("Activity")) {
+                        TextView showOutputHexToBin = findViewById(R.id.computerOutputText);
+                        showOutputHexToBin.setText(binaryValue);
+                    } else if (whereIsTheCallFrom.equals("Practice Problem")){
+                        return binaryValue;
+                    }
                 }
             }
         }
+        return "AN ERROR HAS OCCURRED";
     }
 
     //returns int value of binary arraylist given
@@ -628,87 +687,135 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void makeLettersGoneOrVisible (String goneOrVisible){
-        if (goneOrVisible.equals("gone")){
-            View A = findViewById(R.id.AButton);
-            A.setVisibility(View.GONE);
-            View B = findViewById(R.id.BButton);
-            B.setVisibility(View.GONE);
-            View C = findViewById(R.id.CButton);
-            C.setVisibility(View.GONE);
-            View D = findViewById(R.id.DButton);
-            D.setVisibility(View.GONE);
-            View E = findViewById(R.id.EButton);
-            E.setVisibility(View.GONE);
-            View F = findViewById(R.id.FButton);
-            F.setVisibility(View.GONE);
-        } else if (goneOrVisible.equals("visible")){
-            View A = findViewById(R.id.AButton);
-            A.setVisibility(View.VISIBLE);
-            View B = findViewById(R.id.BButton);
-            B.setVisibility(View.VISIBLE);
-            View C = findViewById(R.id.CButton);
-            C.setVisibility(View.VISIBLE);
-            View D = findViewById(R.id.DButton);
-            D.setVisibility(View.VISIBLE);
-            View E = findViewById(R.id.EButton);
-            E.setVisibility(View.VISIBLE);
-            View F = findViewById(R.id.FButton);
-            F.setVisibility(View.VISIBLE);
+        if (curScreen.equals("calculator")){
+            if (goneOrVisible.equals("gone")){
+                View A = findViewById(R.id.AButton);
+                A.setVisibility(View.GONE);
+                View B = findViewById(R.id.BButton);
+                B.setVisibility(View.GONE);
+                View C = findViewById(R.id.CButton);
+                C.setVisibility(View.GONE);
+                View D = findViewById(R.id.DButton);
+                D.setVisibility(View.GONE);
+                View E = findViewById(R.id.EButton);
+                E.setVisibility(View.GONE);
+                View F = findViewById(R.id.FButton);
+                F.setVisibility(View.GONE);
+            } else if (goneOrVisible.equals("visible")){
+                View A = findViewById(R.id.AButton);
+                A.setVisibility(View.VISIBLE);
+                View B = findViewById(R.id.BButton);
+                B.setVisibility(View.VISIBLE);
+                View C = findViewById(R.id.CButton);
+                C.setVisibility(View.VISIBLE);
+                View D = findViewById(R.id.DButton);
+                D.setVisibility(View.VISIBLE);
+                View E = findViewById(R.id.EButton);
+                E.setVisibility(View.VISIBLE);
+                View F = findViewById(R.id.FButton);
+                F.setVisibility(View.VISIBLE);
+            }
         }
+
     }
 
     public void makeNumbersGoneOrVisible (String goneOrVisible){
-        if (goneOrVisible.equals("gone")){
+        if (curScreen.equals("calculator")) {
+            if (goneOrVisible.equals("gone")) {
 
-            View two = findViewById(R.id.twoButton);
-            two.setVisibility(View.GONE);
+                View two = findViewById(R.id.twoButton);
+                two.setVisibility(View.GONE);
 
-            View three = findViewById(R.id.threeButton);
-            three.setVisibility(View.GONE);
+                View three = findViewById(R.id.threeButton);
+                three.setVisibility(View.GONE);
 
-            View four = findViewById(R.id.fourButton);
-            four.setVisibility(View.GONE);
+                View four = findViewById(R.id.fourButton);
+                four.setVisibility(View.GONE);
 
-            View five = findViewById(R.id.fiveButton);
-            five.setVisibility(View.GONE);
+                View five = findViewById(R.id.fiveButton);
+                five.setVisibility(View.GONE);
 
-            View six = findViewById(R.id.sixButton);
-            six.setVisibility(View.GONE);
+                View six = findViewById(R.id.sixButton);
+                six.setVisibility(View.GONE);
 
-            View seven = findViewById(R.id.sevenButton);
-            seven.setVisibility(View.GONE);
+                View seven = findViewById(R.id.sevenButton);
+                seven.setVisibility(View.GONE);
 
-            View eight = findViewById(R.id.eightButton);
-            eight.setVisibility(View.GONE);
+                View eight = findViewById(R.id.eightButton);
+                eight.setVisibility(View.GONE);
 
-            View nine = findViewById(R.id.nineButton);
-            nine.setVisibility(View.GONE);
+                View nine = findViewById(R.id.nineButton);
+                nine.setVisibility(View.GONE);
 
-        } else if (goneOrVisible.equals("visible")){
-            View two = findViewById(R.id.twoButton);
-            two.setVisibility(View.VISIBLE);
+            } else if (goneOrVisible.equals("visible")) {
+                View two = findViewById(R.id.twoButton);
+                two.setVisibility(View.VISIBLE);
 
-            View three = findViewById(R.id.threeButton);
-            three.setVisibility(View.VISIBLE);
+                View three = findViewById(R.id.threeButton);
+                three.setVisibility(View.VISIBLE);
 
-            View four = findViewById(R.id.fourButton);
-            four.setVisibility(View.VISIBLE);
+                View four = findViewById(R.id.fourButton);
+                four.setVisibility(View.VISIBLE);
 
-            View five = findViewById(R.id.fiveButton);
-            five.setVisibility(View.VISIBLE);
+                View five = findViewById(R.id.fiveButton);
+                five.setVisibility(View.VISIBLE);
 
-            View six = findViewById(R.id.sixButton);
-            six.setVisibility(View.VISIBLE);
+                View six = findViewById(R.id.sixButton);
+                six.setVisibility(View.VISIBLE);
 
-            View seven = findViewById(R.id.sevenButton);
-            seven.setVisibility(View.VISIBLE);
+                View seven = findViewById(R.id.sevenButton);
+                seven.setVisibility(View.VISIBLE);
 
-            View eight = findViewById(R.id.eightButton);
-            eight.setVisibility(View.VISIBLE);
+                View eight = findViewById(R.id.eightButton);
+                eight.setVisibility(View.VISIBLE);
 
-            View nine = findViewById(R.id.nineButton);
-            nine.setVisibility(View.VISIBLE);
+                View nine = findViewById(R.id.nineButton);
+                nine.setVisibility(View.VISIBLE);
+            }
         }
+    }
+
+    //Generates practice problem in the correct number system
+    //Based on user input of : StartingNumSystem, ConvertedNumsystem, Range of number,
+    //TODO COOOME BAKBAK
+    public void generateRandomPracticeNumber (View view){
+
+        TextView startingNumSystem = findViewById(R.id.startingNumberSystemText);
+        String startNumSystem =  startingNumSystem.getText().toString();
+        startingNumberSystem = startNumSystem;
+        
+        TextView endingNumSystem = findViewById(R.id.convertedNumberSystemText);
+        String endNumSystem =  endingNumSystem.getText().toString();
+
+
+        convertedNumberSystem = startingNumberSystem;
+        startingNumberSystem = "Decimal";
+
+        EditText startingLimit = findViewById(R.id.lowerLimitSubmitted);
+        int start =  Integer.valueOf(startingLimit.getText().toString());
+
+        EditText endingLimit = findViewById(R.id.upperLimitNum);
+        int end =  Integer.valueOf(endingLimit.getText().toString());
+
+        userInput = String.valueOf((int)(Math.random() * ((end - start) + 1) + start));
+
+        System.out.println("RandomNumberGenerated " + userInput);
+
+        if (startNumSystem.equals("Decimal")){
+            TextView showProblem = findViewById(R.id.valueOfNumToConvert);
+            showProblem.setText(userInput);
+        } else {
+            System.out.println("CURNUMSYS " + startingNumberSystem);
+            System.out.println("CONNNNNUMSYS " + convertedNumberSystem);
+            userInput = calculateConvertedValue("Practice Problem");
+            System.out.println("Convertedrandomnumber " + userInput);
+            TextView showProblem = findViewById(R.id.valueOfNumToConvert);
+            showProblem.setText(userInput);
+        }
+
+
+
+
     }
 
     public void showHomeScreen (View view){
