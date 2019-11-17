@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     String convertedNumberSystem = "";
     Boolean convertingNumChosen = false;
 
+    String correctAnswer;
+
     String curScreen = "";
     public static Map<String, String> hexToBinTable;
     public static Map<String, String> hexToDeciTable;
@@ -138,6 +140,9 @@ public class MainActivity extends AppCompatActivity {
     //Conversion methods are called here
     //Display to activities are called here
     public String calculateConvertedValue(String whereIsTheCallFrom){
+        if (whereIsTheCallFrom.equals("Practice Problem")){
+            curScreen = "practice";
+        }
         if (startingNumChosen == true && convertingNumChosen == true){
 
             if (startingNumberSystem.equals("Decimal")){
@@ -783,7 +788,7 @@ public class MainActivity extends AppCompatActivity {
         TextView startingNumSystem = findViewById(R.id.startingNumberSystemText);
         String startNumSystem =  startingNumSystem.getText().toString();
         startingNumberSystem = startNumSystem;
-        
+
         TextView endingNumSystem = findViewById(R.id.convertedNumberSystemText);
         String endNumSystem =  endingNumSystem.getText().toString();
 
@@ -812,10 +817,34 @@ public class MainActivity extends AppCompatActivity {
             TextView showProblem = findViewById(R.id.valueOfNumToConvert);
             showProblem.setText(userInput);
         }
+        convertedNumberSystem = endNumSystem;
+        startingNumberSystem = startNumSystem;
+        correctAnswer = calculateConvertedValue("Practice Problem");
+    }
 
+    public void checkAndShowCorrectAnswer (View view){
+        //checks user input
+        //grades
+        //shows correct answer
+        /*
+        EditText startingLimit = findViewById(R.id.lowerLimitSubmitted);
+        int start =  Integer.valueOf(startingLimit.getText().toString());
 
+        EditText endingLimit = findViewById(R.id.upperLimitNum);
+        int end =  Integer.valueOf(endingLimit.getText().toString());
 
+        EditText userAnswer = findViewById(R.id.answerFromUser2);
+        String userAnswerGiven =  userAnswer.getText().toString();
+        if(!userInput.equals("") && !startingNumberSystem.equals("") && !convertedNumberSystem.equals("") && start != null && end != null){
+            if (userAnswerGiven.equals(correctAnswer)){
+                //show text CORRECT!
+            } else {
+                //show text incorrect
+                //button show answer
+                //user can resubmit a different answer
+            }
 
+         */
     }
 
     public void showHomeScreen (View view){
