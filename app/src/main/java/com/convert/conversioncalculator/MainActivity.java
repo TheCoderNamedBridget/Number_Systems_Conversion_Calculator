@@ -2,20 +2,17 @@ package com.convert.conversioncalculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.convert.conversioncalculator.R;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.security.AccessController.getContext;
 
 //TODO: Change theme of all buttons to make UX better
 //TODO: Write methods/logic to generate random practice problems
@@ -826,7 +823,7 @@ public class MainActivity extends AppCompatActivity {
         //checks user input
         //grades
         //shows correct answer
-        /*
+
         EditText startingLimit = findViewById(R.id.lowerLimitSubmitted);
         int start =  Integer.valueOf(startingLimit.getText().toString());
 
@@ -835,16 +832,21 @@ public class MainActivity extends AppCompatActivity {
 
         EditText userAnswer = findViewById(R.id.answerFromUser2);
         String userAnswerGiven =  userAnswer.getText().toString();
-        if(!userInput.equals("") && !startingNumberSystem.equals("") && !convertedNumberSystem.equals("") && start != null && end != null){
-            if (userAnswerGiven.equals(correctAnswer)){
+        if(!userInput.equals("") && !startingNumberSystem.equals("") && !convertedNumberSystem.equals("")) {
+            Button submitButton = findViewById(R.id.submitAnswer);
+            if (userAnswerGiven.equals(correctAnswer)) {
+                submitButton.setBackgroundColor(Color.GREEN);
+                submitButton.setText("Correct");
                 //show text CORRECT!
             } else {
+                submitButton.setBackgroundColor(Color.RED);
+                submitButton.setText("Incorrect");
                 //show text incorrect
                 //button show answer
                 //user can resubmit a different answer
             }
 
-         */
+        }
     }
 
     public void showHomeScreen (View view){
