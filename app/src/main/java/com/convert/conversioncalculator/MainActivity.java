@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 //TODO: Change theme of all buttons to make UX better
-//TODO: Write methods/logic to generate random practice problems
 //TODO: Write methods to show steps of the conversions
 
 //TODO: HOMESCREEN: Make home screen more intuitive -> button graphics better or add words
@@ -40,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
     Boolean convertingNumChosen = false;
 
     String correctAnswer;
-
     String curScreen = "";
+    String stepsOfConversion;
+
     public static Map<String, String> hexToBinTable;
     public static Map<String, String> hexToDeciTable;
     public static Map<String, String> octToBinTable;
-
     public static Map<String, String> binToOctTable;
     public static Map<String, String> binToHexTable;
 
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeHexAndOctalHashes();
-
         setContentView(R.layout.activity_main);
     }
 
@@ -132,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
     public void callCalculateFromActivity(View view){
         calculateConvertedValue("Activity");
         curScreen = "calculator";
+        Button showShowStepsButton = findViewById(R.id.showSteps);
+        showShowStepsButton.setVisibility(View.VISIBLE);
     }
     //Runs logic of entire calculator
     //Conversion methods are called here
@@ -779,7 +779,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Generates practice problem in the correct number system
     //Based on user input of : StartingNumSystem, ConvertedNumsystem, Range of number,
-    //TODO COOOME BAKBAK
     public void generateRandomPracticeNumber (View view){
 
         TextView startingNumSystem = findViewById(R.id.startingNumberSystemText);
@@ -803,10 +802,10 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println("RandomNumberGenerated " + userInput);
 
-        if (startNumSystem.equals("Decimal")){
+        if (startNumSystem.equals("Decimal") && start != end){
             TextView showProblem = findViewById(R.id.valueOfNumToConvert);
             showProblem.setText(userInput);
-        } else {
+        } else if (start != end) {
             System.out.println("CURNUMSYS " + startingNumberSystem);
             System.out.println("CONNNNNUMSYS " + convertedNumberSystem);
             userInput = calculateConvertedValue("Practice Problem");
@@ -823,16 +822,18 @@ public class MainActivity extends AppCompatActivity {
         //checks user input
         //grades
         //shows correct answer
+        Button showShowStepsButton = findViewById(R.id.showSteps);
+        showShowStepsButton.setVisibility(View.VISIBLE);
 
         EditText startingLimit = findViewById(R.id.lowerLimitSubmitted);
-        int start =  Integer.valueOf(startingLimit.getText().toString());
+        String start =  startingLimit.getText().toString();
 
         EditText endingLimit = findViewById(R.id.upperLimitNum);
-        int end =  Integer.valueOf(endingLimit.getText().toString());
+        String end =  endingLimit.getText().toString();
 
         EditText userAnswer = findViewById(R.id.answerFromUser2);
         String userAnswerGiven =  userAnswer.getText().toString();
-        if(!userInput.equals("") && !startingNumberSystem.equals("") && !convertedNumberSystem.equals("")) {
+        if(!userInput.equals("") && !startingNumberSystem.equals("") && !convertedNumberSystem.equals("") && !start.equals(null) && !end.equals(null)) {
             Button submitButton = findViewById(R.id.submitAnswer);
             if (userAnswerGiven.equals(correctAnswer)) {
                 submitButton.setBackgroundColor(Color.GREEN);
@@ -859,11 +860,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showCalculatorScreen (View view){
+        curScreen = "calculator";
         setContentView(R.layout.activity_calculator);
     }
 
     public void showPracticeProblemScreen (View view){
+        curScreen = "Practice Problems";
         setContentView(R.layout.activity_practice_problems);
+    }
+
+    public void showShowStepsScreen (View view){
+        curScreen = "Show Steps";
+        setContentView(R.layout.activity_show_steps);
     }
 
 }
