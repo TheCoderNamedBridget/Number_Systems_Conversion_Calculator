@@ -16,6 +16,7 @@ import java.util.Map;
 
 //TODO: Change theme of all buttons to make UX better
 //TODO: Write methods to show steps of the conversions
+//TODO: For show steps screen provide
 
 //TODO: HOMESCREEN: Make home screen more intuitive -> button graphics better or add words
 
@@ -275,15 +276,22 @@ public class MainActivity extends AppCompatActivity {
     //returns int value of binary arraylist given
     //Binary numbers are read right to left starting with the MVB(most valueable bit)
     //Works for whole numbers
+
+    //“\r\n” new line
     public int binToDeci(ArrayList binNum){
         int deciNum = 0;
-
+        correctAnswer = "Start with a decimal value of 0. Start at the least valuable, right most bit. ";
         for (int i = 0; i < binNum.size(); i++){
 
             if (binNum.get(i).toString().equals("1")){
                 deciNum += Math.pow(2,i);
+                correctAnswer = correctAnswer + "\r\n Because the value is a 1 we add 2 raised to the " + i + " power(" + Math.pow(2,i) + ") to the decimal value";
+
+            } else {
+                correctAnswer = correctAnswer + "\r\n Because the value is a 0, the decimal value is unchanged";
             }
         }
+        correctAnswer = correctAnswer + "\r\n So the correct answer is " + deciNum;
         System.out.println("binToDeci DECINUM VALUE = " + deciNum);
         return deciNum;
     }
@@ -292,7 +300,9 @@ public class MainActivity extends AppCompatActivity {
     //Works for whole numbers
     public ArrayList deciToWholeBin(int deciNum){
 
+        correctAnswer = "Start with a binary value of 0. Start with the largest power of 2 that can be subtracte from the decimal value without making the decimal value < 0 ";
         ArrayList binNum = new ArrayList();
+        ArrayList actualBinNum = new ArrayList();
         int curDeciValue = deciNum;
         for (int i = 0; i < 20; i++) {//intialize ArrayList
             binNum.add(0);
@@ -316,10 +326,28 @@ public class MainActivity extends AppCompatActivity {
             curIndex -= 1;
         }
         //System.out.println("SizeofBinNumArray " + binNum.size());
-        for (int test = 0; test < binNum.size(); test++ ){
-            System.out.println("Value of Binum starting at lsb = " + test + " " + binNum.get(test));
+        for (int extraZero = binNum.size() - 1; extraZero >= 0; extraZero-- ){
+            if (binNum.get(extraZero).equals("1")){
+
+                if (actualBinNum.size() == 0){
+
+                    int actualBinNumLength = extraZero + 1;
+                    System.out.println("actualBinNumLength " + actualBinNumLength);
+                    for (int f = 0; f < actualBinNumLength ; f++){
+                        actualBinNum.add("0");
+                    }
+                }
+                System.out.println("one being added at index " + extraZero);
+                actualBinNum.remove(extraZero);
+                actualBinNum.add(extraZero , "1");
+
+            } else if (binNum.get(extraZero).equals("0") && actualBinNum.size() != 0){
+                System.out.println("zero being added at index " + extraZero);
+                actualBinNum.remove(extraZero);
+                actualBinNum.add(extraZero , "0");
+            }
         }
-        return binNum;
+        return actualBinNum;
     }
 
     //converts from decimal to different base
@@ -609,7 +637,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void clearUserInput (View view){
+    public void clearUserInputFromActivty (View view){
+        clearUserInput();
+    }
+
+    public void clearUserInput (){
+        correctAnswer = "";
         makeLettersGoneOrVisible("visible");
         makeNumbersGoneOrVisible("visible");
         startingNumberSystem = "";
@@ -862,6 +895,7 @@ public class MainActivity extends AppCompatActivity {
     public void showCalculatorScreen (View view){
         curScreen = "calculator";
         setContentView(R.layout.activity_calculator);
+        clearUserInput();
     }
 
     public void showPracticeProblemScreen (View view){
@@ -872,6 +906,14 @@ public class MainActivity extends AppCompatActivity {
     public void showShowStepsScreen (View view){
         curScreen = "Show Steps";
         setContentView(R.layout.activity_show_steps);
+        TextView setStartingNumberSystem = findViewById(R.id.startingNumberSystem);
+        setStartingNumberSystem.setText(startingNumberSystem);
+
+        TextView setEndingNumberSystem = findViewById(R.id.convertedNumberSystem);
+        setEndingNumberSystem.setText(convertedNumberSystem);
+
+        TextView setSteps = findViewById(R.id.actualSteps);
+        setSteps.setText(correctAnswer);
     }
 
 }
