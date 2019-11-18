@@ -16,12 +16,9 @@ import java.util.Map;
 
 //TODO: Change theme of all buttons to make UX better
 //TODO: Write methods to show steps of the conversions
-//TODO: For show steps screen provide
+//TODO: For show steps screen provide explainations for all conversions: binToHexOrOct, hexOrOctToBinary
 
 //TODO: HOMESCREEN: Make home screen more intuitive -> button graphics better or add words
-
-//TODO: CALCULATORCREEN: Fix button alighnment on calculator. Right most butttons are touching the edge of screen
-//TODO: CALCULATORCREEN: Make text disappear or more descriptive of what is being shown
 
 //TODO: PRACTICEPROBLEMSCREEN: make UI and UX intuitive/usable
 
@@ -300,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
     //Works for whole numbers
     public ArrayList deciToWholeBin(int deciNum){
 
-        correctAnswer = "Start with a binary value of 0. Start with the largest power of 2 that can be subtracte from the decimal value without making the decimal value < 0 ";
+        correctAnswer = "Start with a binary value of 0. Start with the largest power of 2 that can be subtracted from the decimal value without making the decimal value < 0. ";
         ArrayList binNum = new ArrayList();
         ArrayList actualBinNum = new ArrayList();
         int curDeciValue = deciNum;
@@ -316,11 +313,14 @@ public class MainActivity extends AppCompatActivity {
 
             if (curDeciValue - Math.pow(2, curIndex) >= 0) {
 
+                correctAnswer = correctAnswer + " \r\n If the 2 raised to the " + curIndex + "(" + Math.pow(2,curIndex) + ") subtracted from the decimal value > 0 (" + (curDeciValue - Math.pow(2,curIndex)) + ") add a 1 to the binary value";
                 curDeciValue -= Math.pow(2, curIndex);
                 //System.out.println("inwhileaboveadd " + curIndex);
                 binNum.remove(curIndex);
-                binNum.add(curIndex,"1");
+                binNum.add(curIndex, "1");
                 //System.out.println("at index 3 " + binNum.get(3));
+            } else {
+                correctAnswer = correctAnswer + " \r\n If the 2 raised to the " + curIndex + "(" + Math.pow(2,curIndex) + ") subtracted from the decimal value < 0 (" +(curDeciValue - Math.pow(2,curIndex))+ ") add a 0 to the binary value";
             }
             //System.out.println("HERE " + (curIndex == 0) + " " + (curIndex) );
             curIndex -= 1;
@@ -347,42 +347,50 @@ public class MainActivity extends AppCompatActivity {
                 actualBinNum.add(extraZero , "0");
             }
         }
+        correctAnswer = correctAnswer + " \r\n So the correct answer is " + actualBinNum;
         return actualBinNum;
     }
+
 
     //converts from decimal to different base
     public int differentBaseToDeci(String numSystem, ArrayList numGiven){
         int deciNum = 0;
+
         System.out.print("decinum " + deciNum);
         if ( numSystem.equals("oct")){
-
+            correctAnswer = "Start with the digit in the ones place and a decimal value of 0. ";
             for (int p = 0; p < numGiven.size();p++){
-
+                correctAnswer = correctAnswer + " \r\n Add 8 raised to the power of " + p + " (" + Math.pow(8,p) + ") times the value " + (String)numGiven.get(p) + ". Then add it (" + Math.pow(8,p) * Integer.parseInt((String)numGiven.get(p)) +") to the decimal value";
                 deciNum += Math.pow(8,p) * Integer.parseInt((String)numGiven.get(p));
             }
         } else if (numSystem.equals("hex")){//numSystem.equals("hex")
+            correctAnswer = "To convert from hexadecimal to decimal you must know a basic rule. A = 10, B = 11, C = 12, D = 13, E = 14, F = 15";
             for (int i = 0; i < numGiven.size(); i++){
                 System.out.print("decinum in loop " + deciNum);
+
                 if ("1234567890".contains(String.valueOf(numGiven.get(i)))){//adds int values from hex to decivalue
+                    correctAnswer = correctAnswer + " \r\n Add 16 raised to the power of " + i + " (" + Math.pow(16,i) + ") times the value " + (String)numGiven.get(i) + ". Then add it (" + Math.pow(16,i) * Integer.parseInt((String)numGiven.get(i)) +") to the decimal value";
                     deciNum += Math.pow(16,i) * Integer.parseInt((String)numGiven.get(i));
                 } else {//adds letter values from hex to decivalue
+                    correctAnswer = correctAnswer + " \r\n Add 16 raised to the power of " + i + " (" + Math.pow(16,i) + ") times the value " + hexToDeciTable.get(String.valueOf(numGiven.get(i))) + ". Then add it (" + Math.pow(16,i) * Integer.parseInt(hexToDeciTable.get(String.valueOf(numGiven.get(i)))) +") to the decimal value";
                     deciNum += Math.pow(16,i) * Integer.valueOf(hexToDeciTable.get(String.valueOf(numGiven.get(i))));
                 }
             }
+
         }
         System.out.print("decinum " + deciNum);
 
-//        TextView textViewToChange = (TextView) findViewById(R.id.hello);
-//        textViewToChange.setText(deciNum);
+        correctAnswer = correctAnswer + " \r\n So the correct answer is " + deciNum;
         return deciNum;
     }
 
+    //TODO COMEBACK
     //converts binary value to hex or oct
     //returns String
     public String binToHexOrOct(String numSystem, ArrayList binNum){
         //convert binNum to String
+        correctAnswer = " When converting from binary it is helpful to have a table in front of you.";
         String binNumString = convertArrayListToString(binNum);
-        System.out.println("EXTRAZERO? " + binNumString);
         String hexNumStringValue = "";
         String octNumStringValue = "";
 
@@ -413,9 +421,11 @@ public class MainActivity extends AppCompatActivity {
         return "Nothing";
     }
 
+    //TODO COMEBACK
     //converts hex or oct value to binary
     //returns arraylist of binary
     public ArrayList hexOrOctToBinary(String numSystem, ArrayList hexOrOctNum){
+        correctAnswer = " When converting to binary it is helpful to have a table in front of you.";
         String binaryValue = "";
         ArrayList<Integer> binaryNum;
         if (numSystem.equals("hex")){
