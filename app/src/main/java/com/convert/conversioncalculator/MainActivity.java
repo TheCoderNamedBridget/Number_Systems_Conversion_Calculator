@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO: Change theme of all buttons to make UX better
+
 //TODO: Write methods to show steps of the conversions
 //TODO: For show steps screen provide explainations for all conversions: binToHexOrOct, hexOrOctToBinary
 
@@ -126,8 +126,7 @@ public class MainActivity extends AppCompatActivity {
     public void callCalculateFromActivity(View view){
         calculateConvertedValue("Activity");
         curScreen = "calculator";
-        Button showShowStepsButton = findViewById(R.id.showSteps);
-        showShowStepsButton.setVisibility(View.VISIBLE);
+
     }
     //Runs logic of entire calculator
     //Conversion methods are called here
@@ -135,8 +134,14 @@ public class MainActivity extends AppCompatActivity {
     public String calculateConvertedValue(String whereIsTheCallFrom){
         if (whereIsTheCallFrom.equals("Practice Problem")){
             curScreen = "practice";
+            Button showSubmitAnswerButton = findViewById(R.id.submitAnswer);
+            showSubmitAnswerButton.setVisibility(View.VISIBLE);
         }
         if (startingNumChosen == true && convertingNumChosen == true){
+            if (curScreen.equals("calculator")){
+                Button showShowStepsButton = findViewById(R.id.showSteps);
+                showShowStepsButton.setVisibility(View.VISIBLE);
+            }
 
             if (startingNumberSystem.equals("Decimal")){
                 //convert to binary, octal, hex works
@@ -629,6 +634,8 @@ public class MainActivity extends AppCompatActivity {
         if (userInput.equals("") && !convertedNumberSystem.equals("")){
             convertedNumberSystem = "";
             convertingNumChosen = false;
+            TextView toTextAppears = findViewById(R.id.toText);
+            toTextAppears.setVisibility(View.INVISIBLE);
             TextView endNumSys = findViewById(R.id.convertedNumberSystemText);
             endNumSys.setText(convertedNumberSystem);
         } else if (userInput.equals("") && !startingNumberSystem.equals("")){
@@ -659,6 +666,8 @@ public class MainActivity extends AppCompatActivity {
         computerOutputText = "";
         startingNumChosen = false;
         convertingNumChosen = false;
+        TextView toTextAppears = findViewById(R.id.toText);
+        toTextAppears.setVisibility(View.INVISIBLE);
         TextView beginNumSys = findViewById(R.id.startingNumberSystemText);
         beginNumSys.setText(startingNumberSystem);
         TextView endNumSys = findViewById(R.id.convertedNumberSystemText);
@@ -679,9 +688,15 @@ public class MainActivity extends AppCompatActivity {
             makeNumbersGoneOrVisible("gone");
         } else if (!convertingNumChosen && !startingNumberSystem.equals("Binary")){
             convertingNumChosen = true;
+
             convertedNumberSystem += "Binary";
             TextView textViewToChange = findViewById(R.id.convertedNumberSystemText);
             textViewToChange.setText(convertedNumberSystem);
+
+            TextView toTextAppears = findViewById(R.id.toText);
+            if (curScreen.equals("calculator")){
+                toTextAppears.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -697,6 +712,10 @@ public class MainActivity extends AppCompatActivity {
             convertedNumberSystem += "Decimal";
             TextView textViewToChange = findViewById(R.id.convertedNumberSystemText);
             textViewToChange.setText(convertedNumberSystem);
+            TextView toTextAppears = findViewById(R.id.toText);
+            if (curScreen.equals("calculator")){
+                toTextAppears.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -711,6 +730,10 @@ public class MainActivity extends AppCompatActivity {
             convertedNumberSystem += "Hexidecimal";
             TextView textViewToChange = findViewById(R.id.convertedNumberSystemText);
             textViewToChange.setText(convertedNumberSystem);
+            TextView toTextAppears = findViewById(R.id.toText);
+            if (curScreen.equals("calculator")){
+                toTextAppears.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -726,6 +749,11 @@ public class MainActivity extends AppCompatActivity {
             convertedNumberSystem += "Octal";
             TextView textViewToChange = findViewById(R.id.convertedNumberSystemText);
             textViewToChange.setText(convertedNumberSystem);
+            TextView toTextAppears = findViewById(R.id.toText);
+            if (curScreen.equals("calculator")){
+                toTextAppears.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 
