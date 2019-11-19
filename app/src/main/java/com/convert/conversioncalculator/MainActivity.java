@@ -18,8 +18,6 @@ import java.util.Map;
 //TODO: Write methods to show steps of the conversions
 //TODO: For show steps screen provide explainations for all conversions: binToHexOrOct, hexOrOctToBinary
 
-//TODO: HOMESCREEN: Make home screen more intuitive -> button graphics better or add words
-
 //TODO: PRACTICEPROBLEMSCREEN: make UI and UX intuitive/usable
 
 
@@ -831,15 +829,40 @@ public class MainActivity extends AppCompatActivity {
         TextView endingNumSystem = findViewById(R.id.convertedNumberSystemText);
         String endNumSystem =  endingNumSystem.getText().toString();
 
-
+        if (startNumSystem.equals("")){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (endNumSystem.equals("")){
+            Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
+            return;
+        }
         convertedNumberSystem = startingNumberSystem;
         startingNumberSystem = "Decimal";
 
+
+
         EditText startingLimit = findViewById(R.id.lowerLimitSubmitted);
+        if (startingLimit.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), "Please Choose a Lower Limit", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        System.out.println("BADVALUE " + startingLimit.getText().toString());
         int start =  Integer.valueOf(startingLimit.getText().toString());
 
+
+
         EditText endingLimit = findViewById(R.id.upperLimitNum);
+        if (endingLimit.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), "Please Choose an Upper Limit", Toast.LENGTH_SHORT).show();
+            return;
+        }
         int end =  Integer.valueOf(endingLimit.getText().toString());
+
+        if (start > end){
+            Toast.makeText(getApplicationContext(), "Lower limit cannot be less than upper limit", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         userInput = String.valueOf((int)(Math.random() * ((end - start) + 1) + start));
 
