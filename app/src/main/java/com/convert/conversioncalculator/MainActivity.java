@@ -460,7 +460,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         binaryNum = convertStringToArrayList(binaryValue);
-        String binaryNumForAnswerText = convertArrayListToString(reverseArrayList(binaryNum));
+        String binaryNumForAnswerText = convertArrayListToString(binaryNum);
         correctAnswer = correctAnswer + " \r\n So the correct answer is " + binaryNumForAnswerText;
         //call method to convert String to ArrayList
         return binaryNum;
