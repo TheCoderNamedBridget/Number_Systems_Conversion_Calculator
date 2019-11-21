@@ -33,8 +33,10 @@ public class MainActivity extends AppCompatActivity {
     String convertedNumberSystem = "";
     Boolean convertingNumChosen = false;
 
+    String correctAnswerNum = "";
     String correctAnswer;
     String curScreen = "";
+    String pastScreen = "";
 
     public static Map<String, String> hexToBinTable;
     public static Map<String, String> hexToDeciTable;
@@ -132,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
     public String calculateConvertedValue(String whereIsTheCallFrom){
         if (whereIsTheCallFrom.equals("Practice Problem")){
             curScreen = "practice";
-
-
             Button showSubmitAnswerButton = findViewById(R.id.submitAnswer);
             showSubmitAnswerButton.setVisibility(View.VISIBLE);
 
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             showAnswerText.setVisibility(View.VISIBLE);
 
         }
-        if (startingNumChosen == true && convertingNumChosen == true && !userInput.equals("")){
+        if (startingNumChosen && convertingNumChosen && !userInput.equals("")){
             if (curScreen.equals("calculator")){
                 Button showShowStepsButton = findViewById(R.id.showSteps);
                 showShowStepsButton.setVisibility(View.VISIBLE);
@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else if (startingNumberSystem.equals("Binary")){//Convert to oct hex or deci
                 //convert to decimal,oct,hex works
+                System.out.println("COOMEEE " + startingNumberSystem + convertedNumberSystem);
                 if (convertedNumberSystem.equals("Decimal")){
                     binNum = convertStringToArrayList(userInput);
                     String intValueOfUserInput = String.valueOf(binToDeci(binNum));
@@ -290,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
     //“\r\n” new line
     public int binToDeci(ArrayList binNum){
         int deciNum = 0;
-        correctAnswer = correctAnswer + "Start with a decimal value of 0. Start at the least valuable, right most bit. \r\n ";
+        correctAnswer = "Start with a decimal value of 0. Start at the least valuable, right most bit. \r\n ";
         for (int i = 0; i < binNum.size(); i++){
 
             if (binNum.get(i).toString().equals("1")){
@@ -303,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
         }
         correctAnswer = correctAnswer + "\r\n So the correct answer is " + deciNum;
         System.out.println("binToDeci DECINUM VALUE = " + deciNum);
+        correctAnswerNum = "" + deciNum;
         return deciNum;
     }
 
@@ -310,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
     //Works for whole numbers
     public ArrayList deciToWholeBin(int deciNum){
 
-        correctAnswer = correctAnswer + "Start with a binary value of 0. Start with the largest power of 2 that can be subtracted from the decimal value without making the decimal value < 0. ";
+        correctAnswer = "Start with a binary value of 0. Start with the largest power of 2 that can be subtracted from the decimal value without making the decimal value < 0. ";
         ArrayList binNum = new ArrayList();
         ArrayList actualBinNum = new ArrayList();
         int curDeciValue = deciNum;
@@ -362,6 +364,7 @@ public class MainActivity extends AppCompatActivity {
         }
         String binNumForAnswer = convertArrayListToString(actualBinNum);
         correctAnswer = correctAnswer + " \r\n So the correct answer is " + binNumForAnswer;
+        correctAnswerNum = binNumForAnswer;
         return actualBinNum;
     }
 
@@ -369,10 +372,10 @@ public class MainActivity extends AppCompatActivity {
     //converts from decimal to different base
     public int differentBaseToDeci(String numSystem, ArrayList numGiven){
         int deciNum = 0;
-
+        correctAnswer = "Start with the digit in the ones place and a decimal value of 0. ";
         System.out.print("decinum " + deciNum);
         if ( numSystem.equals("oct")){
-            correctAnswer = correctAnswer + "Start with the digit in the ones place and a decimal value of 0. ";
+
             for (int p = 0; p < numGiven.size();p++){
                 correctAnswer = correctAnswer + " \r\n Add 8 raised to the power of " + p + " (" + Math.pow(8,p) + ") times the value " + (String)numGiven.get(p) + ". Then add it (" + Math.pow(8,p) * Integer.parseInt((String)numGiven.get(p)) +") to the decimal value";
                 deciNum += Math.pow(8,p) * Integer.parseInt((String)numGiven.get(p));
@@ -393,7 +396,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         System.out.print("decinum " + deciNum);
-
+        correctAnswerNum = ""+deciNum;
         correctAnswer = correctAnswer + " \r\n So the correct answer is " + deciNum;
         return deciNum;
     }
@@ -402,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
     //returns String
     public String binToHexOrOct(String numSystem, ArrayList binNum){
         //convert binNum to String
-        correctAnswer = correctAnswer + " When converting from binary it is helpful to have a table in front of you.";
+        correctAnswer = " When converting from binary it is helpful to have a table in front of you.";
         String binNumString = convertArrayListToString(binNum);
         String hexNumStringValue = "";
         String octNumStringValue = "";
@@ -422,20 +425,23 @@ public class MainActivity extends AppCompatActivity {
 
             System.out.println("hexNumStringValue " + hexNumStringValue);
             correctAnswer = correctAnswer + " \r\n So the correct answer is " + hexNumStringValue;
+            correctAnswerNum = hexNumStringValue;
             return hexNumStringValue;
         } else if (numSystem.equals("oct")){
             while (binNumString.length() % 3 != 0){
                 binNumString = "0" + binNumString;
             }
             correctAnswer = correctAnswer + " \r\n First make sure you can group the binary digits into even groups of 3.";
-            System.out.println("OCTALTESTING Binary Value: " + binNumString + " octNumStringValue " + octNumStringValue);
             for (int i = 0; i < binNumString.length()/3; i++){
-                System.out.println("OCTALTESTING Substring of binary value " + binNumString.substring(binNumString.length()-(3*i + 3), binNumString.length()-3*i));
                 octNumStringValue = binToOctTable.get(binNumString.substring(binNumString.length()-(3*i + 3), binNumString.length()- 3*i)) + octNumStringValue ;
                 correctAnswer = correctAnswer + " \r\n Lookup the group " + binNumString.substring(binNumString.length()-(3*i + 3), binNumString.length()-(3*i)) + " which equals a octal value of " + binToOctTable.get(binNumString.substring(binNumString.length()-(3*i + 3), binNumString.length()- 3*i));
             }
-            System.out.println(octNumStringValue);
+            if (octNumStringValue.substring(0, octNumStringValue.length()-1).equals("0")){
+                octNumStringValue = octNumStringValue.substring(octNumStringValue.length()-1);
+            }
+            System.out.println("octNumStringValue " + octNumStringValue);
             correctAnswer = correctAnswer + " \r\n So the correct answer is " + octNumStringValue;
+            correctAnswerNum = octNumStringValue;
             return octNumStringValue;
         }
         return "Nothing";
@@ -444,7 +450,7 @@ public class MainActivity extends AppCompatActivity {
     //converts hex or oct value to binary
     //returns arraylist of binary
     public ArrayList hexOrOctToBinary(String numSystem, ArrayList hexOrOctNum){
-        correctAnswer = correctAnswer + " When converting to binary it is helpful to have a table in front of you.";
+        correctAnswer = " When converting to binary it is helpful to have a table in front of you.";
         String binaryValue = "";
         ArrayList<Integer> binaryNum;
         if (numSystem.equals("hex")){
@@ -462,6 +468,7 @@ public class MainActivity extends AppCompatActivity {
         binaryNum = convertStringToArrayList(binaryValue);
         String binaryNumForAnswerText = convertArrayListToString(binaryNum);
         correctAnswer = correctAnswer + " \r\n So the correct answer is " + binaryNumForAnswerText;
+        correctAnswerNum = binaryNumForAnswerText;
         //call method to convert String to ArrayList
         return binaryNum;
     }
@@ -790,6 +797,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void clearSystems(View view){
+        startingNumberSystem = "";
+        convertedNumberSystem = "";
+        startingNumChosen = false;
+        convertingNumChosen = false;
+        TextView startNum = findViewById(R.id.startingNumberSystemText);
+        startNum.setText(convertedNumberSystem);
+        TextView endNum = findViewById(R.id.convertedNumberSystemText);
+        endNum.setText(convertedNumberSystem);
+
+    }
+
     public void makeLettersGoneOrVisible (String goneOrVisible){
         if (curScreen.equals("calculator")){
             if (goneOrVisible.equals("gone")){
@@ -890,8 +909,6 @@ public class MainActivity extends AppCompatActivity {
         TextView endingNumSystem = findViewById(R.id.convertedNumberSystemText);
         String endNumSystem =  endingNumSystem.getText().toString();
 
-
-
         if (startNumSystem.equals("")){
             Toast.makeText(getApplicationContext(), "Please Choose a Number System", Toast.LENGTH_SHORT).show();
             return;
@@ -903,17 +920,12 @@ public class MainActivity extends AppCompatActivity {
         convertedNumberSystem = startingNumberSystem;
         startingNumberSystem = "Decimal";
 
-
-
         EditText startingLimit = findViewById(R.id.lowerLimitSubmitted);
         if (startingLimit.getText().toString().equals("")){
             Toast.makeText(getApplicationContext(), "Please Choose a Lower Limit", Toast.LENGTH_SHORT).show();
             return;
         }
-        System.out.println("BADVALUE " + startingLimit.getText().toString());
         int start =  Integer.valueOf(startingLimit.getText().toString());
-
-
 
         EditText endingLimit = findViewById(R.id.upperLimitNum);
         if (endingLimit.getText().toString().equals("")){
@@ -929,30 +941,24 @@ public class MainActivity extends AppCompatActivity {
 
         userInput = String.valueOf((int)(Math.random() * ((end - start) + 1) + start));
 
-        System.out.println("RandomNumberGenerated " + userInput);
-
         if (startNumSystem.equals("Decimal") && start != end){
             TextView showProblem = findViewById(R.id.valueOfNumToConvert);
             showProblem.setText(userInput);
         } else if (start != end) {
-            System.out.println("CURNUMSYS " + startingNumberSystem);
-            System.out.println("CONNNNNUMSYS " + convertedNumberSystem);
             userInput = calculateConvertedValue("Practice Problem");
-            System.out.println("Convertedrandomnumber " + userInput);
             TextView showProblem = findViewById(R.id.valueOfNumToConvert);
             showProblem.setText(userInput);
+            System.out.println("PINKPOWERUPHERE " + correctAnswer);
+            correctAnswer = "";
         }
         convertedNumberSystem = endNumSystem;
         startingNumberSystem = startNumSystem;
-        System.out.print("ISTRUE? " + startNumSystem.equals("Decimal"));
 
-        correctAnswer = calculateConvertedValue("Practice Problem");
+        System.out.println("PINKPOWER " + "(" + correctAnswer+ ")   (" + calculateConvertedValue("Practice Problem") +")");
+        //correctAnswer = correctAnswer; //+ "{{{" + calculateConvertedValue("Practice Problem") + "}}}";
     }
 
     public void checkAndShowCorrectAnswer (View view){
-        //checks user input
-        //grades
-        //shows correct answer
         Button showShowStepsButton = findViewById(R.id.showSteps);
         showShowStepsButton.setVisibility(View.VISIBLE);
 
@@ -964,23 +970,35 @@ public class MainActivity extends AppCompatActivity {
 
         EditText userAnswer = findViewById(R.id.answerFromUser2);
         String userAnswerGiven =  userAnswer.getText().toString();
-
-        System.out.print("RIGHTSPOT");
-
+        if (startingNumberSystem.equals("") || convertedNumberSystem.equals("")){
+            Toast.makeText(getApplicationContext(), "Please Choose Valid Number Systems", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(!userInput.equals("") && !startingNumberSystem.equals("") && !convertedNumberSystem.equals("") && !start.equals(null) && !end.equals(null)) {
             Button submitButton = findViewById(R.id.submitAnswer);
-            if (userAnswerGiven.equals(correctAnswer)) {
+            System.out.println("USERINPUTGIVEN " + userAnswerGiven + correctAnswerNum);
+            if (userAnswerGiven.equals(correctAnswerNum)) {
                 submitButton.setBackgroundColor(Color.GREEN);
                 submitButton.setText("Correct");
-                //show text CORRECT!
             } else {
                 submitButton.setBackgroundColor(Color.RED);
                 submitButton.setText("Incorrect");
-                //show text incorrect
-                //button show answer
-                //user can resubmit a different answer
             }
+        }
+    }
 
+    public void whereToGoBack (View view){
+        System.out.println("LOOKHERE " + pastScreen + curScreen);
+        if (pastScreen.equals("Practice Problems")){
+            userInput = "";
+            startingNumChosen = false;
+            convertingNumChosen = false;
+            startingNumberSystem = "";
+            convertedNumberSystem = "";
+            correctAnswer = "";
+            practiceProblemScreen();
+        } else if (pastScreen.equals("calculator")){
+            calculatorScreen();
         }
     }
 
@@ -994,18 +1012,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showCalculatorScreen (View view){
+        calculatorScreen();
+    }
+
+    public void calculatorScreen(){
         curScreen = "calculator";
+        pastScreen = curScreen;
+        System.out.println("LOOKHERE " + pastScreen + curScreen);
         setContentView(R.layout.activity_calculator);
         clearUserInput();
     }
 
     public void showPracticeProblemScreen (View view){
+        practiceProblemScreen();
+    }
+
+    public void practiceProblemScreen(){
+
         curScreen = "Practice Problems";
+        pastScreen = curScreen;
         setContentView(R.layout.activity_practice_problems);
     }
 
     public void showShowStepsScreen (View view){
-
         curScreen = "Show Steps";
         setContentView(R.layout.activity_show_steps);
         TextView setStartingNumberSystem = findViewById(R.id.startingNumberSystem);
@@ -1016,7 +1045,6 @@ public class MainActivity extends AppCompatActivity {
         if (setStartingNumberSystem.getText().toString().equals("Decimal") && !setEndingNumberSystem.getText().toString().equals("Binary")){
             correctAnswer = " When converting from Decimal always start by converting to binary. \r\n" + correctAnswer;
         }
-
 
         TextView setSteps = findViewById(R.id.actualSteps);
         setSteps.setText(correctAnswer);
