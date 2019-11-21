@@ -14,7 +14,7 @@
             style="@android:style/Widget.Button.Inset"
             android:layout_width="160sp"
             android:layout_height="60sp"
-            android:onClick="showCalculatorScreen"
+            android:onClick="whereToGoBack"
             android:text="@string/back"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
