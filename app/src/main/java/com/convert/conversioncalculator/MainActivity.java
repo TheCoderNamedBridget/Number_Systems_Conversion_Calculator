@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                     String stringBinaryValueOfUser = convertArrayListToString(deciToWholeBin(Integer.valueOf(userInput)));
                     if (whereIsTheCallFrom.equals("Activity")){
                         TextView showOutputDeciToBin = findViewById(R.id.computerOutputText);
-                        showOutputDeciToBin.setText(stringBinaryValueOfUser);
+                        showOutputDeciToBin.setText(correctAnswerNum);
                     } else if (whereIsTheCallFrom.equals("Practice Problem")){
                         return stringBinaryValueOfUser;
                     }
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                     String deciToHex = binToHexOrOct("hex", binaryValueOfUser);
                     if (whereIsTheCallFrom.equals("Activity")) {
                         TextView showOutputDeciToHex = findViewById(R.id.computerOutputText);
-                        showOutputDeciToHex.setText(deciToHex);
+                        showOutputDeciToHex.setText(correctAnswerNum);
                     } else if (whereIsTheCallFrom.equals("Practice Problem")){
                         return deciToHex;
                     }
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     String deciToOct = binToHexOrOct("oct", binaryValueOfUser);
                     if (whereIsTheCallFrom.equals("Activity")) {
                         TextView showOutputDeciToOct = findViewById(R.id.computerOutputText);
-                        showOutputDeciToOct.setText(deciToOct);
+                        showOutputDeciToOct.setText(correctAnswerNum);
                     } else if (whereIsTheCallFrom.equals("Practice Problem")){
                         return deciToOct;
                     }
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                     String intValueOfUserInput = String.valueOf(binToDeci(binNum));
                     if (whereIsTheCallFrom.equals("Activity")) {
                         TextView showOutputBinToDeci = findViewById(R.id.computerOutputText);
-                        showOutputBinToDeci.setText(intValueOfUserInput);
+                        showOutputBinToDeci.setText(correctAnswerNum);
                     } else if (whereIsTheCallFrom.equals("Practice Problem")){
                         return intValueOfUserInput;
                     }
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                     String hexValue = binToHexOrOct("hex",hexNum);
                     if (whereIsTheCallFrom.equals("Activity")) {
                         TextView showOutputBinToHex = findViewById(R.id.computerOutputText);
-                        showOutputBinToHex.setText(hexValue);
+                        showOutputBinToHex.setText(correctAnswerNum);
                     } else if (whereIsTheCallFrom.equals("Practice Problem")){
                         return hexValue;
                     }
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                     String octalValue = binToHexOrOct("oct",octNum);
                     if (whereIsTheCallFrom.equals("Activity")) {
                         TextView showOutputBinToOct = findViewById(R.id.computerOutputText);
-                        showOutputBinToOct.setText(octalValue);
+                        showOutputBinToOct.setText(correctAnswerNum);
                     } else if (whereIsTheCallFrom.equals("Practice Problem")){
                         return octalValue;
                     }
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                     String hexValue = binToHexOrOct("hex",convertStringToArrayList(binaryValue));
                     if (whereIsTheCallFrom.equals("Activity")) {
                         TextView showOutputOctToHex = findViewById(R.id.computerOutputText);
-                        showOutputOctToHex.setText(hexValue);
+                        showOutputOctToHex.setText(correctAnswerNum);
                     } else if (whereIsTheCallFrom.equals("Practice Problem")){
                         return hexValue;
                     }
@@ -228,14 +228,14 @@ public class MainActivity extends AppCompatActivity {
                     String intValueOfUserInput = String.valueOf(differentBaseToDeci("oct", octNum));
                     if (whereIsTheCallFrom.equals("Activity")) {
                         TextView showOutputOctToDeci = findViewById(R.id.computerOutputText);
-                        showOutputOctToDeci.setText(intValueOfUserInput);
+                        showOutputOctToDeci.setText(correctAnswerNum);
                     } else if (whereIsTheCallFrom.equals("Practice Problem")){
                         return intValueOfUserInput;
                     }
                 } else if (convertedNumberSystem.equals("Binary")){//works now
                     if (whereIsTheCallFrom.equals("Activity")) {
                         TextView showOutputOctToBin = findViewById(R.id.computerOutputText);
-                        showOutputOctToBin.setText(binaryValue);
+                        showOutputOctToBin.setText(correctAnswerNum);
                     } else if (whereIsTheCallFrom.equals("Practice Problem")){
                         return binaryValue;
                     }
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (whereIsTheCallFrom.equals("Activity")) {
                         TextView showOutputHexToOct = findViewById(R.id.computerOutputText);
-                        showOutputHexToOct.setText(octValue);
+                        showOutputHexToOct.setText(correctAnswerNum);
                     } else if (whereIsTheCallFrom.equals("Practice Problem")){
                         return octValue;
                     }
@@ -259,14 +259,14 @@ public class MainActivity extends AppCompatActivity {
                     String intValueOfUserInput = String.valueOf(differentBaseToDeci("hex", hexNum));
                     if (whereIsTheCallFrom.equals("Activity")) {
                         TextView showOutputHexToDeci = findViewById(R.id.computerOutputText);
-                        showOutputHexToDeci.setText(intValueOfUserInput);
+                        showOutputHexToDeci.setText(correctAnswerNum);
                     } else if (whereIsTheCallFrom.equals("Practice Problem")){
                         return intValueOfUserInput;
                     }
                 } else if (convertedNumberSystem.equals("Binary")){//works now
                     if (whereIsTheCallFrom.equals("Activity")) {
                         TextView showOutputHexToBin = findViewById(R.id.computerOutputText);
-                        showOutputHexToBin.setText(binaryValue);
+                        showOutputHexToBin.setText(correctAnswerNum);
                     } else if (whereIsTheCallFrom.equals("Practice Problem")){
                         return binaryValue;
                     }
@@ -400,7 +400,14 @@ public class MainActivity extends AppCompatActivity {
             }
             correctAnswer = correctAnswer + " \r\n So the correct answer is " + hexNumStringValue;
             correctAnswerNum = hexNumStringValue;
-            return hexNumStringValue;
+            if (correctAnswerNum.length() != 1){
+                while (correctAnswerNum.substring(0,1).equals("0")){
+                    correctAnswerNum = correctAnswerNum.substring(1);
+                }
+            }
+
+
+            return correctAnswerNum;
         } else if (numSystem.equals("oct")){
             while (binNumString.length() % 3 != 0){
                 binNumString = "0" + binNumString;
@@ -415,7 +422,12 @@ public class MainActivity extends AppCompatActivity {
             }
             correctAnswer = correctAnswer + " \r\n So the correct answer is " + octNumStringValue;
             correctAnswerNum = octNumStringValue;
-            return octNumStringValue;
+            if (correctAnswerNum.length() != 1){
+                while (correctAnswerNum.substring(0,1).equals("0")){
+                    correctAnswerNum = correctAnswerNum.substring(1);
+                }
+            }
+            return correctAnswerNum;
         }
         return "Nothing";
     }
@@ -944,6 +956,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if(!userInput.equals("") && !startingNumberSystem.equals("") && !convertedNumberSystem.equals("") && !start.equals(null) && !end.equals(null)) {
             Button submitButton = findViewById(R.id.submitAnswer);
+            userAnswerGiven = userAnswerGiven.toUpperCase();
             if (userAnswerGiven.equals(correctAnswerNum)) {
                 submitButton.setBackgroundColor(Color.GREEN);
                 submitButton.setText("Correct");
