@@ -466,7 +466,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         binaryNum = convertStringToArrayList(binaryValue);
+
         String binaryNumForAnswerText = convertArrayListToString(binaryNum);
+        System.out.println("TESTINGHERE " + binaryNumForAnswerText.substring(binaryNumForAnswerText.length() -1) + " SPACE " + binaryNumForAnswerText.substring(1));
+        while (!binaryNumForAnswerText.substring(0,1).equals("1")){
+            binaryNumForAnswerText = binaryNumForAnswerText.substring(1);
+        }
         correctAnswer = correctAnswer + " \r\n So the correct answer is " + binaryNumForAnswerText;
         correctAnswerNum = binaryNumForAnswerText;
         //call method to convert String to ArrayList
