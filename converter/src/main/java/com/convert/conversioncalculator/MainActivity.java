@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-//TODO: Figure out how to change name of app
-
 public class MainActivity extends AppCompatActivity {
 
     String userInput = "";
@@ -34,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     String correctAnswer;
     String curScreen = "";
     String pastScreen = "";
+    String problem = "";
 
     public static Map<String, String> hexToBinTable;
     public static Map<String, String> hexToDeciTable;
@@ -916,8 +915,8 @@ public class MainActivity extends AppCompatActivity {
         }
         int end =  Integer.valueOf(endingLimit.getText().toString());
 
-        if (start > end){
-            Toast.makeText(getApplicationContext(), "Lower limit cannot be less than upper limit", Toast.LENGTH_SHORT).show();
+        if (start >= end){
+            Toast.makeText(getApplicationContext(), "Lower limit cannot be > or = to Upper Limit", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -926,10 +925,12 @@ public class MainActivity extends AppCompatActivity {
         if (startNumSystem.equals("Decimal") && start != end){
             TextView showProblem = findViewById(R.id.valueOfNumToConvert);
             showProblem.setText(userInput);
+            problem = userInput;
         } else if (start != end) {
             userInput = calculateConvertedValue("Practice Problem");
             TextView showProblem = findViewById(R.id.valueOfNumToConvert);
             showProblem.setText(userInput);
+            problem = userInput;
             correctAnswer = "";
         }
         convertedNumberSystem = endNumSystem;
@@ -995,6 +996,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void calculatorScreen(){
+        problem = "";
         curScreen = "calculator";
         pastScreen = curScreen;
         setContentView(R.layout.activity_calculator);
@@ -1019,6 +1021,8 @@ public class MainActivity extends AppCompatActivity {
         setStartingNumberSystem.setText(startingNumberSystem);
         TextView setEndingNumberSystem = findViewById(R.id.convertedNumberSystem);
         setEndingNumberSystem.setText(convertedNumberSystem);
+        TextView setProblemNumber = findViewById(R.id.numToConvert);
+        setProblemNumber.setText(problem);
         if (setStartingNumberSystem.getText().toString().equals("Decimal") && !setEndingNumberSystem.getText().toString().equals("Binary")){
             correctAnswer = " When converting from Decimal always start by converting to binary. \r\n" + correctAnswer;
         }
