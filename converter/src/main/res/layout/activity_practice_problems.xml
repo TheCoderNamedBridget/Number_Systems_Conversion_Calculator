@@ -7,7 +7,25 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/background_light">
+
+        <Button
+            android:id="@+id/clearNumberSystems"
+            style="@android:style/Widget.Button.Inset"
+            android:layout_width="150sp"
+            android:layout_height="80sp"
+            android:layout_marginTop="100dp"
+            android:onClick="clearSystems"
+            android:text="Clear Systems"
+            android:textSize="20sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/showSteps"
@@ -162,8 +180,8 @@
             android:id="@+id/numToConvert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="120dp"
-            android:layout_marginLeft="120dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="110dp"
             android:layout_marginEnd="296dp"
             android:layout_marginRight="296dp"
@@ -220,8 +238,8 @@
             android:id="@+id/valueOfNumToConvert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="230dp"
-            android:layout_marginLeft="230dp"
+            android:layout_marginStart="130dp"
+            android:layout_marginLeft="130dp"
             android:layout_marginTop="110dp"
             android:layout_marginEnd="164dp"
             android:layout_marginRight="164dp"
@@ -263,7 +281,7 @@
             android:layout_marginEnd="315dp"
             android:layout_marginRight="315dp"
             android:inputType="number"
-            android:text="0"
+            android:text="1"
             android:textColor="@android:color/black"
             android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
